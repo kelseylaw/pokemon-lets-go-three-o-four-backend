@@ -65,6 +65,7 @@ CREATE TABLE Items(
 	ID int PRIMARY KEY,
 	Type char(32) NOT NULL
 	PlayableID int,
+	Used bit,
 	FOREIGN KEY (Type) REFERENCES ItemTypes(Type) ON DELETE CASCADE,
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE
 );
@@ -154,12 +155,10 @@ CREATE TABLE MoveAcross(
 CREATE TABLE Catches(
 	PlayableID int,
 	PokeID int,
-	ItemID int,
 	HappenedAt timestamp NOT NULL,
-	PRIMARY KEY (PlayableID, PokeID, ItemID),
+	PRIMARY KEY (PlayableID, PokeID),
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE,
-	FOREIGN KEY (PokeID) REFERENCES Pokemon(ID) ON DELETE CASCADE,
-	FOREIGN KEY (ItemID) REFERENCES Items(ID) ON DELETE CASCADE
+	FOREIGN KEY (PokeID) REFERENCES Pokemon(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE Uses(
@@ -309,11 +308,21 @@ INSERT ALL
 SELECT * from dual;
 
 INSERT ALL
-	INTO Items VALUES(1, 'Poke Ball', 1)
-	INTO Items VALUES(2, 'Great Ball', 1)
-	INTO Items VALUES(3, 'Ultra Ball', 1)
-	INTO Items VALUES(4, 'Master Ball', 1)
-	INTO Items VALUES(5, 'Revive', 1) 
+	INTO Items VALUES(1, 'Poke Ball', 1, 0)
+	INTO Items VALUES(2, 'Great Ball', 1, 0)
+	INTO Items VALUES(3, 'Ultra Ball', 1, 0)
+	INTO Items VALUES(4, 'Master Ball', 1, 0)
+	INTO Items VALUES(5, 'Revive', 1, 0)
+	INTO Items VALUES(6, 'Poke Ball', 1, 1)
+	INTO Items VALUES(7, 'Poke Ball', 2, 1)
+	INTO Items VALUES(8, 'Poke Ball', 3, 1)
+	INTO Items VALUES(9, 'Poke Ball', 4, 1)
+	INTO Items VALUES(10, 'Poke Ball', 5, 1)
+	INTO Items VALUES(11, 'Revive', 1, 1)
+	INTO Items VALUES(12, 'Revive', 1, 1)
+	INTO Items VALUES(13, 'Revive', 1, 1)
+	INTO Items VALUES(14, 'Revive', 1, 1)
+	INTO Items VALUES(15, 'Revive', 1, 1) 
 SELECT * FROM dual;
 
 INSERT ALL
@@ -471,80 +480,81 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
+	INTO Pokemon VALUES(1, 'Bulbasaur', 1, 'Healthy', 00)
+	INTO Pokemon VALUES(2, 'Charmander', 4, 'Healthy', 20) 
+	INTO Pokemon VALUES(3, 'Squirtle', 7, 'Healthy', 0) 
+	INTO Pokemon VALUES(4, 'Pikachu', 25, 'Healthy', 0) 
+	INTO Pokemon VALUES(5, 'Eevee', 133, 'Healthy', 0) 
+SELECT * FROM dual;
+
+INSERT ALL
+	INTO OwnedBy VALUES(2, 1)
+	INTO OwnedBy VALUES(3, 2)
+	INTO OwnedBy VALUES(1, 3)
+	INTO OwnedBy VALUES(4, 4)
+	INTO OwnedBy VALUES(5, 5)
+SELECT * FROM dual;
+
+INSERT ALL
 	INTO Pokedex VALUES(1, 1, 30)
+	INTO Pokedex VALUES(2, 1, 1)
 	INTO Pokedex VALUES(3, 1, 1)
-	INTO Pokedex VALUES(6, 1, 1)
-	INTO Pokedex VALUES(7, 1, 1)
-	INTO Pokedex VALUES(9, 1, 1)
+	INTO Pokedex VALUES(4, 1, 1)
+	INTO Pokedex VALUES(5, 1, 1)
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Pokemon VALUES(1, 'Bulbasaur', 'Bulbasaur', 1, 'Grass', 'Poison', 'Healthy', 20, 1, 'Pallet Town')
-	INTO Pokemon VALUES(2, 'Charmander', 'Charmander', 4, 'Fight', NULL, 'Healthy', 0, 3, 'Pallet Town') 
-	INTO Pokemon VALUES(3, 'Squirtle', 'Squirtle', 7, 'Water', NULL, 'Healthy', 0, 6, 'Pallet Town') 
-	INTO Pokemon VALUES(4, 'Pikachu', 'Pikachu', 25, 'Electric', NULL, 'Healthy', 0, 7, 'Pallet Town') 
-	INTO Pokemon VALUES(5, 'Eevee', 'Eevee', 133, 'Normal', NULL, 'Healthy', 0, 9, 'Pallet Town') 
+	INTO GymBadges_Received VALUES(1, 'Boulder Badge', 1, 10, (TO_TIMESTAMP('2019-02-11 17:00:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO GymBadges_Received VALUES(2, 'Cascade Badge', 1, 7, (TO_TIMESTAMP('2019-02-11 18:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO GymBadges_Received VALUES(3, 'Thunder Badge', 1, 12, (TO_TIMESTAMP('2019-02-11 20:45:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO GymBadges_Received VALUES(4, 'Rainbow Badge', 1, 6, (TO_TIMESTAMP('2019-02-12 10:00:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO GymBadges_Received VALUES(5, 'Soul Badge', 1, 9, (TO_TIMESTAMP('2019-02-12 12:00:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO GymBadges_Received VALUES(1, 'Boulder Badge', 1, 11)
-	INTO GymBadges_Received VALUES(2, 'Cascade Badge', 1, 12)
-	INTO GymBadges_Received VALUES(3, 'Thunder Badge', 1, 13)
-	INTO GymBadges_Received VALUES(4, 'Rainbow Badge', 1, 14)
-	INTO GymBadges_Received VALUES(5, 'Soul Badge', 1, 15)
-SELECT * FROM dual;
-
-
-INSERT ALL
-	INTO Sells VALUES(1, 1, 4, 3)
-	INTO Sells VALUES(2, 3, 4, 1)
-	INTO Sells VALUES(3, 2, 4, 7)
-	INTO Sells VALUES(4, 5, 4, 1)
-	INTO Sells VALUES(5, 2, 4, 1)
-	INTO Sells VALUES(6, 3, 4, 9)
+	INTO Sells VALUES(1, 1, 16, 1, (TO_TIMESTAMP('2019-02-11 16:50:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Sells VALUES(2, 2, 16, 1, (TO_TIMESTAMP('2019-02-11 16:51:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Sells VALUES(3, 3, 16, 1, (TO_TIMESTAMP('2019-02-11 16:52:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Sells VALUES(4, 4, 16, 1, (TO_TIMESTAMP('2019-02-11 16:53:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Sells VALUES(5, 5, 16, 1, (TO_TIMESTAMP('2019-02-11 16:54:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Heals VALUES(1, 3, 3)
-	INTO Heals VALUES(2, 3, 1)
-	INTO Heals VALUES(3, 3, 7)
-	INTO Heals VALUES(4, 3, 1)
-	INTO Heals VALUES(5, 3, 6)
-	INTO Heals VALUES(1, 3, 9)
+	INTO Heals VALUES(2, 15, 1, (TO_TIMESTAMP('2019-02-11 16:45:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Heals VALUES(2, 4, 1, (TO_TIMESTAMP('2019-02-11 18:20:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Heals VALUES(2, 21, 1, (TO_TIMESTAMP('2019-02-11 20:35:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Heals VALUES(2, 1, 1, (TO_TIMESTAMP('2019-02-12 9:50:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Heals VALUES(2, 10, 1, (TO_TIMESTAMP('2019-02-12 11:50:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Battle VALUES(1, 4)
-	INTO Battle VALUES(3, 10)
-	INTO Battle VALUES(6, 12)
-	INTO Battle VALUES(7, 13)
-	INTO Battle VALUES(9, 14)
-	INTO Battle VALUES(3, 5)
+	INTO Battle VALUES(1, 10, (TO_TIMESTAMP('2019-02-11 16:55:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Battle VALUES(1, 7, (TO_TIMESTAMP('2019-02-11 18:25:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Battle VALUES(1, 12, (TO_TIMESTAMP('2019-02-11 20:40:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Battle VALUES(1, 6, (TO_TIMESTAMP('2019-02-12 9:55:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO Battle VALUES(1, 9, (TO_TIMESTAMP('2019-02-12 11:55:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO MoveAcross VALUES(1, 'Pallet Town')
-	INTO MoveAcross VALUES(3, 'Route 1')
-	INTO MoveAcross VALUES(6, 'Viridian Forest')
-	INTO MoveAcross VALUES(7, 'Celadon City')
-	INTO MoveAcross VALUES(9, 'Fuchsia City')
-	INTO MoveAcross VALUES(3, 'Route 3')
+	INTO MoveAcross VALUES(1, 'Pewter City', (TO_TIMESTAMP('2019-02-11 16:44:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO MoveAcross VALUES(1, 'Cerulean City', (TO_TIMESTAMP('2019-02-11 18:19:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO MoveAcross VALUES(1, 'Vermilion City', (TO_TIMESTAMP('2019-02-11 20:34:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO MoveAcross VALUES(1, 'Celadon City', (TO_TIMESTAMP('2019-02-12 9:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
+	INTO MoveAcross VALUES(1, 'Fuchsia City', (TO_TIMESTAMP('2019-02-12 11:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Shows VALUES(1, 1) 
-	INTO Shows VALUES(3, 2) 
-	INTO Shows VALUES(6, 4) 
-	INTO Shows VALUES(7, 3) 
-	INTO Shows VALUES(9, 5) 
-	INTO Shows VALUES(3, 4) 
+	INTO Catches VALUES(1, 2, 6, (TO_TIMESTAMP('2019-02-11 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Catches VALUES(2, 3, 7, (TO_TIMESTAMP('2019-02-12 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Catches VALUES(3, 1, 8, (TO_TIMESTAMP('2019-02-13 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Catches VALUES(4, 4, 9, (TO_TIMESTAMP('2019-02-14 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Catches VALUES(5, 5, 10, (TO_TIMESTAMP('2019-02-15 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
 
 INSERT ALL
-	INTO Catches VALUES(1, 1, 3) 
-	INTO Catches VALUES(3, 3, 4) 
-	INTO Catches VALUES(6, 5, 5) 
-	INTO Catches VALUES(7, 4, 3) 
-	INTO Catches VALUES(9, 3, 5) 
-	INTO Catches VALUES(3, 2, 4) 
+	INTO Uses VALUES(1, 2, 11, (TO_TIMESTAMP('2019-02-11 16:35:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Uses VALUES(1, 2, 12, (TO_TIMESTAMP('2019-02-11 18:10:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Uses VALUES(1, 2, 13, (TO_TIMESTAMP('2019-02-11 20:25:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Uses VALUES(1, 2, 14, (TO_TIMESTAMP('2019-02-12 9:40:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')) 
+	INTO Uses VALUES(1, 2, 15, (TO_TIMESTAMP('2019-02-12 11:40:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'))
 SELECT * FROM dual;
