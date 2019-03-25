@@ -13,6 +13,9 @@ var ownedBy = require("./mock_objects/ownedBy");
 var itemTypes = require("./mock_objects/itemTypes");
 var species = require("./mock_objects/species");
 var npc = require("./mock_objects/npc");
+var badges = require("./mock_objects/gymBadges");
+var items = require("./mock_objects/items");
+
 
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: true}));
@@ -77,6 +80,27 @@ app.get("/species/search", (req, res) => {
   }
 })
 
+// items
+app.get("/item/:id", (req,res) => {
+  const itemID = parseInt(req.params.id);
+  const data = mockHelpers.findItemByID(itemID);
+  if (data !== null) {
+    res.json(data);
+  } else {
+    res.json({ error: `${itemID} does not exist!` });
+  }
+});
+
+app.delete("/item/:id", (req, res) => {
+  const itemID = parseInt(req.params.id);
+  const data = mockHelpers.deleteItem(itemID);
+  if (data !== null) {
+    res.json(data);
+  } else {
+    res.json({ error: `${itemID} does not exist!` });
+  }
+});
+
 // NonPlayable
 app.get("/npc", (req, res) => {
   res.json({data: npc.npc})
@@ -105,3 +129,9 @@ app.delete("/npc/:id", (req, res) => {
     res.json({ error: `${npcID} does not exist!` });
   }
 });
+
+// badges
+app.get("/gymbadges", (req, res) => {
+  res.json({data: badges.badges})
+});
+

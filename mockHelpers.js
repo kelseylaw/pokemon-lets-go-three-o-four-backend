@@ -4,6 +4,8 @@ var pokemons = require("./mock_objects/pokemons");
 var ownedBy = require("./mock_objects/ownedBy");
 var species = require("./mock_objects/species");
 var npc = require("./mock_objects/npc");
+var items = require("./mock_objects/items");
+
 
 const findUserByID = (userID) => {
     const data = users.users.filter(playable => playable.ID === userID);
@@ -40,6 +42,25 @@ const filterSpeciesByFoundAt = (foundAt) => {
     return result;
 }
 
+const findItemByID = (itemID) => {
+    const data = items.items.filter(item => item.ID === itemID);
+    if (data.length === 1) {
+        return data[0];
+    } else {
+        return null;
+    }
+};
+
+const deleteItem = (itemID) => {
+    for (let i = 0; i < items.items.length; i++) {
+        if (items.items[i].id === itemID) {
+            delete items.items[i];
+            return npcID;
+        }
+    }
+    return null;
+};
+
 const findNPCbyID = (npcID) => {
     const data = npc.npc.filter(nonPlayable => nonPlayable.id === npcID)
     if (data.length === 1) {
@@ -64,6 +85,8 @@ module.exports = {
     filterPokemonsByUserID,
     findPokemonByID,
     filterSpeciesByFoundAt,
+    findItemByID,
+    deleteItem,
     findNPCbyID,
     deleteNPC
 }
