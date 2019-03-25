@@ -32,21 +32,16 @@ const createPokemon = (request, response) => {
   // console.log(request.body.nickname);
   const {pokedexnum, nickname, ownerID} = request.body;
   // console.log(await getNextID('pokemon'));
-  getNextID('pokemon', function(err, rows) {
-    id = rows[0].max + 1;
-    console.log('back here')
-  console.log(id)
-
-  pool.query('INSERT INTO pokemon VALUES ($1, $2, $3, \'Healthy\', 0)', 
-    [id, nickname, pokedexnum], (error, results) => {
-    if (error) {
-      response.json({ error: `create pokemon with id=${id} failed!` });
-      throw error;
-    }
-    // response.status(201).send(`Pokemon added with ID: ${id}`)
-    response.status(201).json(request.body);
-  })
-
+  getNextID('pokemon').then(function(id) {
+    pool.query('INSERT INTO pokemon VALUES ($1, $2, $3, \'Healthy\', 0)', 
+      [id, nickname, pokedexnum], (error, results) => {
+      if (error) {
+        response.json({ error: `create pokemon with id=${id} failed!` });
+        throw error;
+      }
+      // response.status(201).send(`Pokemon added with ID: ${id}`)
+      response.status(201).json(request.body);
+    })
   });
 }
 
@@ -77,18 +72,19 @@ const deletePokemon = (request, response) => {
   })
 }
 
-function getNextID(table, callback) {
-  console.log(table);
-  console.log('testststs');
-  const temp = table;
 
-  pool.query(`SELECT max(id) FROM ${temp}`, (error, results) => {
-    if (error) {
-      throw callback(error, null);
+let getNextID = function(table) {
+  return new Promise(function(resolve, reject) {
+    try {
+      pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows[0].max + 1)
+      })
+    } catch (error) {
+      console.error(error);
     }
-    console.log('beep');
-    console.log(results.rows[0].max + 1);
-    return callback(null, results.rows);
   })
 }
 
