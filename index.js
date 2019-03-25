@@ -2,8 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-const db = require('./queries')
+
+const pokemonQueries = require('./query/pokemonQueries')
 const playerQueries = require('./query/playerQueries')
+const mapQueries = require('./query/mapQueries')
 
 app.use(bodyParser.json())
 
@@ -20,18 +22,16 @@ app.get('/', (request, response) => {
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/:id", playerQueries.findUserByID)
-app.get("/user/:id/pokemons", db.getPokemonsByUserID);
+app.get("/user/:id/pokemons", pokemonQueries.getPokemonsByUserID);
 app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
-app.get('/pokemon', db.getPokemons)
-app.get('/pokemon/:id', db.getPokemonByID);
-app.post('/pokemon', db.createPokemon);
-app.put('/pokemon/:id', db.updatePokemon);
-app.delete('/pokemon/:id', db.deletePokemon);
-
-app.get("/mapRegion", db.getMapRegions)
-
-app.get("/mapRegion/:name", db.findMapRegion)
+app.get('/pokemon', pokemonQueries.getPokemons)
+app.get('/pokemon/:id', pokemonQueries.getPokemonByID);
+app.post('/pokemon', pokemonQueries.createPokemon);
+app.put('/pokemon/:id', pokemonQueries.updatePokemon);
+app.delete('/pokemon/:id', pokemonQueries.deletePokemon);
+app.get("/mapRegion", mapQueries.getMapRegions)
+app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
