@@ -39,7 +39,8 @@ const allNPCsInRegion = (req, res) => {
 };
 
 const createNPC = (req, res) => {
-    const {id, role, reward} = req.body;
+    const id = getNextID('nonPlayable');
+    const {role, reward} = req.body;
     pool.query('INSERT INTO nonPlayable VALUES ($1, $2, $3)',
         [id, role, reward], (error, results) => {
             if (error) {
@@ -72,6 +73,21 @@ const deleteNPC = (request, response) => {
             throw error
         }
         response.status(200).send(`NonPlayable deleted with ID: ${id}`)
+    })
+};
+
+let getNextID = function(table) {
+    return new Promise(function(resolve, reject) {
+        try {
+            pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(results.rows[0].max + 1)
+            })
+        } catch (error) {
+            console.error(error);
+        }
     })
 };
 
