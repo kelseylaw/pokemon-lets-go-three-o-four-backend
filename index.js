@@ -28,11 +28,13 @@ app.get("/user/:id", playerQueries.findUserByID)
 app.get("/user/:id/pokemons", pokemonQueries.getPokemonsByUserID);
 app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
+
 app.get('/pokemon', pokemonQueries.getPokemons)
 app.get('/pokemon/:id', pokemonQueries.getPokemonByID);
 app.post('/pokemon', pokemonQueries.createPokemon);
 app.put('/pokemon/:id', pokemonQueries.updatePokemon);
 app.delete('/pokemon/:id', pokemonQueries.deletePokemon);
+
 app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
