@@ -12,6 +12,7 @@ var pokemons = require("./mock_objects/pokemons");
 var ownedBy = require("./mock_objects/ownedBy");
 var itemTypes = require("./mock_objects/itemTypes");
 var species = require("./mock_objects/species");
+var npc = require("./mock_objects/npc");
 
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: true}));
@@ -75,3 +76,32 @@ app.get("/species/search", (req, res) => {
     res.json({ error: `There are no species found at ${foundAt}`});
   }
 })
+
+// NonPlayable
+app.get("/npc", (req, res) => {
+  res.json({data: npc.npc})
+});
+
+app.get("/npc/:id", (req, res) => {
+  const npcID = parseInt(req.params.id);
+  const data = mockHelpers.findNPCbyID(npcID);
+  if (data !== null) {
+    res.json(data);
+  } else {
+    res.json({ error: `${npcID} does not exist!` });
+  }
+});
+
+//app.post("/npc/:id/:reward", (req, res) => {})
+
+//app.patch('/npc/:id', (req, res) => {})
+
+app.delete("/npc/:id", (req, res) => {
+  const npcID = parseInt(req.params.id);
+  const data = mockHelpers.deleteNPC(npcID);
+  if (data !== null) {
+    res.json(data);
+  } else {
+    res.json({ error: `${npcID} does not exist!` });
+  }
+});
