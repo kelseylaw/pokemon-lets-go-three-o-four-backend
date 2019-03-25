@@ -6,6 +6,7 @@ const port = 3000
 const pokemonQueries = require('./query/pokemonQueries')
 const playerQueries = require('./query/playerQueries')
 const mapQueries = require('./query/mapQueries')
+const itemQueries = require('./query/itemQueries')
 
 app.use(bodyParser.json())
 
@@ -35,11 +36,11 @@ app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
 // Items
-app.get('/item/:id', db.getItemById);
-app.get('/item/:playableID', db.getItemsFromPlayable);
-app.post('/item', db.createItem);
-app.put('/item/:id', db.updateItem);
-app.delete('item/:id', db.deleteItem);
+app.get('/item/:id', itemQueries.getItemById);
+app.get('/item/:playableID', itemQueries.getItemsFromPlayable);
+app.post('/item', itemQueries.createItem);
+app.put('/item/:id', itemQueries.updateItem);
+app.delete('item/:id', itemQueries.deleteItem);
 
 // NPC
 app.get('/npc', db.getNPC());
