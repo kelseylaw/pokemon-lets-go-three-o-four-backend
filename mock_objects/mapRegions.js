@@ -1,4 +1,4 @@
-const mapRegions = [
+var mapRegions = [
   {
     id: 1,
     name: "Pallet Town",
