@@ -5,6 +5,7 @@ var ownedBy = require("./mock_objects/ownedBy");
 var species = require("./mock_objects/species");
 var npc = require("./mock_objects/npc");
 var items = require("./mock_objects/items");
+var badges = require("./mock_objects/gymBadges");
 
 
 const findUserByID = (userID) => {
@@ -80,6 +81,15 @@ const deleteNPC = (npcID) => {
     return null;
 };
 
+const getBadgesFromKey = (badgeID, playerID, npcID) => {
+    const data = badges.badges.filter(badge => (badge.ID === badgeID && badge.PlayableID === playerID && badge.NonPlayableID === npcID))
+    if (data.length === 1){
+        return data[0];
+    } else return null;
+};
+
+
+
 module.exports = {
     findUserByID,
     filterPokemonsByUserID,
@@ -88,5 +98,6 @@ module.exports = {
     findItemByID,
     deleteItem,
     findNPCbyID,
-    deleteNPC
+    deleteNPC,
+    getBadgesFromKey
 }

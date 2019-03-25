@@ -132,6 +132,39 @@ app.delete("/npc/:id", (req, res) => {
 
 // badges
 app.get("/gymbadges", (req, res) => {
-  res.json({data: badges.badges})
+  const badgeID = req.query.badgeID;
+  const playerID = req.query.playerID;
+  const npcID = req.query.npcID;
+  if (badgeID !== null && playerID !== null && npcID !== null) {
+    const data = mockHelpers.getBadgesFromKey(badgeID, playerID, npcID);
+    if (data !== null) {
+      res.json(data);
+    } else {
+      res.json({ error: `${npcID} does not exist!` });
+    }
+  } else {
+    res.json({data: badges.badges})
+  }
+});
+
+app.patch("/gymbadges", (req, res) => {
+  const badgeID = req.body.badgeID;
+  const name = req.body.badgeName;
+  const playableID = req.body.playableID;
+  const npcID = req.body.npcID;
+  const happenedAt = req.body.happenedAt;
+
+  if (badgeID) {
+
+  } else if (name) {
+
+  } else if (playableID) {
+
+  } else if (npcID){
+
+  } else if (happenedAt){
+
+  }
+
 });
 

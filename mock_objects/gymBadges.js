@@ -19,7 +19,8 @@ var badges = [
         PlayableID: 2,
         NonPlayableID: 1,
         HappenedAt: "2019-03-24 19:34:44"
-    }{
+    },
+    {
         ID: 3,
         Name: "Hall of fame",
         PlayableID: 3,
