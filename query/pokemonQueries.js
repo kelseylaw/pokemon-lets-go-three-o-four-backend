@@ -65,7 +65,10 @@ const updatePokemon = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`User modified with ID: ${id}`)
+      pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+        if (error) throw error;
+        response.status(200).json(results.rows[0])
+      })
     }
   )
 }
