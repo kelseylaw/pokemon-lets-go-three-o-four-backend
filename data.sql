@@ -18,30 +18,30 @@ DROP TABLE Building_Contained;
 DROP TABLE MapRegions;
 
 CREATE TABLE MapRegions(
-	Name char(32) PRIMARY KEY,
-	Type char(32) NOT NULL,
+	Name varchar(32) PRIMARY KEY,
+	Type varchar(32) NOT NULL,
 	MaxSpawnNumber int
 );
 
 CREATE TABLE Building_Contained(
 	ID int,
-	Region char(32),
-	Type char(32),
+	Region varchar(32),
+	Type varchar(32),
 	PRIMARY KEY (ID),
 	FOREIGN KEY (Region) REFERENCES MapRegions(Name) ON DELETE CASCADE
 );
 
 CREATE TABLE Characters(
 	ID int PRIMARY KEY,
-	Name char(32),
-	LocatedAt char(32),
+	Name varchar(32),
+	LocatedAt varchar(32),
 	FOREIGN KEY (LocatedAt) REFERENCES MapRegions(Name) ON DELETE CASCADE
 );
 
 CREATE TABLE Playable(
 	ID int PRIMARY KEY,
-	Username char(32) UNIQUE,
-	Password char(32) NOT NULL,
+	Username varchar(32) UNIQUE,
+	Password varchar(32) NOT NULL,
 	CreatedAt date,
 	BadgesOwned int,
 	Balance int,
@@ -51,19 +51,19 @@ CREATE TABLE Playable(
 
 CREATE TABLE NonPlayable(
 	ID int PRIMARY KEY,
-	Role char(32),
+	Role varchar(32),
 	Reward int NOT NULL,
 	FOREIGN KEY (ID) REFERENCES Characters(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE ItemTypes(
-	Type char(32) PRIMARY KEY,
+	Type varchar(32) PRIMARY KEY,
 	Cost int NOT NULL
 );
 
 CREATE TABLE Items(
 	ID int PRIMARY KEY,
-	Type char(32) NOT NULL,
+	Type varchar(32) NOT NULL,
 	PlayableID int,
 	Used int,
 	FOREIGN KEY (Type) REFERENCES ItemTypes(Type) ON DELETE CASCADE,
@@ -72,18 +72,18 @@ CREATE TABLE Items(
 
 CREATE TABLE Species(
 	ID int PRIMARY KEY,
-	Name char(32),
-	TypeI char(32) NOT NULL,
-	TypeII char(32),
-	FoundAt char(32),
+	Name varchar(32),
+	TypeI varchar(32) NOT NULL,
+	TypeII varchar(32),
+	FoundAt varchar(32),
 	FOREIGN KEY (FoundAt) REFERENCES MapRegions(Name) ON DELETE CASCADE
 );
 
 CREATE TABLE Pokemon(
 	ID int PRIMARY KEY, 
-	Nickname char(32),
+	Nickname varchar(32),
 	PokeDexNum int,
-	Status char(32),
+	Status varchar(32),
 	BattlesDone int,
 	FOREIGN KEY (PokeDexNum) REFERENCES Species(ID) ON DELETE CASCADE
 );
@@ -104,7 +104,7 @@ CREATE TABLE Pokedex(
 
 CREATE TABLE GymBadges_Received(
 	BadgeID int,
-	Name char(32) NOT NULL,
+	Name varchar(32) NOT NULL,
 	PlayableID int,
 	NonPlayableID int,
 	HappenedAt timestamp NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE Battle(
 
 CREATE TABLE MoveAcross(
 	PlayableID int,
-	MapName char(32),
+	MapName varchar(32),
 	HappenedAt timestamp NOT NULL,
 	PRIMARY KEY (PlayableID, MapName),
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE,
