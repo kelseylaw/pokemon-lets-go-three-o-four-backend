@@ -10,6 +10,8 @@ var mapRegions = require("./mock_objects/mapRegions");
 var users = require("./mock_objects/users");
 var pokemons = require("./mock_objects/pokemons");
 var ownedBy = require("./mock_objects/ownedBy");
+var itemTypes = require("./mock_objects/itemTypes");
+var species = require("./mock_objects/species");
 
 app.use(bodyParser.json());
 app.use(cors({credentials: true, origin: true}));
@@ -58,3 +60,18 @@ app.get("/user/:id/pokemons", (req, res) => {
   const array = pokemonIDs.map(pokemonID => mockHelpers.findPokemonByID(pokemonID));
   res.json(array);
 });
+
+app.get("/itemType", (req, res) => {
+  res.json({ data: itemTypes.itemTypes })
+});
+
+app.get("/species/search", (req, res) => {
+  const foundAt = req.query.foundAt;
+  const result = mockHelpers.filterSpeciesByFoundAt(foundAt);
+
+  if (result.length > 0) {
+    res.json({ data: result });
+  } else {
+    res.json({ error: `There are no species found at ${foundAt}`});
+  }
+})
