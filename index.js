@@ -1,10 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const port = 3000;
-const db = require('./queries');
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const port = 3000
 
-app.use(bodyParser.json());
+const pokemonQueries = require('./query/pokemonQueries')
+const playerQueries = require('./query/playerQueries')
+const mapQueries = require('./query/mapQueries')
+
+app.use(bodyParser.json())
+
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -15,12 +19,20 @@ app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 });
 
-// Pokemon
-app.get('/pokemon', db.getPokemons);
-app.get('/pokemon/:id', db.getPokemonByID);
-app.post('/pokemon', db.createPokemon);
-app.put('/pokemon/:id', db.updatePokemon);
-app.delete('/pokemon/:id', db.deletePokemon);
+
+app.post("/authenticate", playerQueries.authenticateUser)
+app.get("/user", playerQueries.getUsers)
+app.get("/user/:id", playerQueries.findUserByID)
+app.get("/user/:id/pokemons", pokemonQueries.getPokemonsByUserID);
+app.post("/user", playerQueries.addNewUser)
+app.put("/user/:id", playerQueries.editUserByID)
+app.get('/pokemon', pokemonQueries.getPokemons)
+app.get('/pokemon/:id', pokemonQueries.getPokemonByID);
+app.post('/pokemon', pokemonQueries.createPokemon);
+app.put('/pokemon/:id', pokemonQueries.updatePokemon);
+app.delete('/pokemon/:id', pokemonQueries.deletePokemon);
+app.get("/mapRegion", mapQueries.getMapRegions)
+app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
 // Items
 app.get('/item/:id', db.getItemById);
