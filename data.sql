@@ -57,6 +57,7 @@ CREATE TABLE NonPlayable(
 );
 
 CREATE TABLE ItemTypes(
+	ID int UNIQUE,
 	Type char(32) PRIMARY KEY,
 	Cost int NOT NULL
 );

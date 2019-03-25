@@ -21,7 +21,7 @@ const itemTypes = [
     },
     {
         id: 5,
-        name: "Max Revive",
+        name: "Revive",
         cost: 1500
     }
 ]

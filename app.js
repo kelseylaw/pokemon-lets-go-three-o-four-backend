@@ -49,8 +49,9 @@ app.get("/user/:id", (req, res) => {
   }
 });
 
+// Not working at the moment
 app.patch("/user/:id", (req, res) => {
-  const accountId = req.query.id;
+  const accountId = req.params.id;
   const newLocation = req.body.location;
   res.json(req.body);
 })
@@ -60,6 +61,12 @@ app.get("/user/:id/pokemons", (req, res) => {
   const pokemonIDs = mockHelpers.filterPokemonsByUserID(playableID);
   const array = pokemonIDs.map(pokemonID => mockHelpers.findPokemonByID(pokemonID));
   res.json(array);
+});
+
+app.get("/user/:id/itemCount", (req, res) => {
+  const playableID = parseInt(req.params.id);
+  const itemList = mockHelpers.filterItemsByUserID(playableID);
+  res.json(mockHelpers.countItems(itemList));
 });
 
 app.get("/itemType", (req, res) => {
