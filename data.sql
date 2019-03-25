@@ -297,11 +297,11 @@ INSERT INTO NonPlayable VALUES(28, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(29, 'Trainer', 500);
 
 
-INSERT INTO ItemTypes VALUES('Poke Ball', 200);
-INSERT INTO ItemTypes VALUES('Great Ball', 600);
-INSERT INTO ItemTypes VALUES('Ultra Ball', 1200);
-INSERT INTO ItemTypes VALUES('Master Ball', 6000);
-INSERT INTO ItemTypes VALUES('Revive', 1500);
+INSERT INTO ItemTypes VALUES(1,'Poke Ball', 200);
+INSERT INTO ItemTypes VALUES(2,'Great Ball', 600);
+INSERT INTO ItemTypes VALUES(3,'Ultra Ball', 1200);
+INSERT INTO ItemTypes VALUES(4,'Master Ball', 6000);
+INSERT INTO ItemTypes VALUES(5,'Revive', 1500);
 
 
 INSERT INTO Items VALUES(1, 'Poke Ball', 1, 0);
