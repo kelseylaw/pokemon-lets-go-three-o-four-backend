@@ -66,23 +66,23 @@ const getBattlesByUserID = (req, res) => {
 
 const addNewUser = (req, res) => {
   const accountJSON = req.body;
-  const date = new Date();
-  const id = 0;   // TODO: ID creation does not work right now.
   const name = accountJSON.characterName;
   const username = accountJSON.username;
   const password = accountJSON.password;
-  const createdAt = `${date.getFullYear}-${date.getMonth}-${date.getDay}`
+  const createdAt = new Date().toISOString().substr(0,10);
   const badgesOwned = accountJSON.badgesOwned;
   const balance = accountJSON.balance;
   const admin = accountJSON.admin;
 
-  pool.query(`INSERT INTO Characters VALUES(${id}, '${name}', 'Pallet Town')`, (error, results) => {
-    if (error) throw error;
-    pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
+  getNextID('Characters').then(function(id) {
+    pool.query(`INSERT INTO Characters VALUES(${id}, '${name}', 'Pallet Town')`, (error, results) => {
       if (error) throw error;
-      pool.query(`SELECT * FROM Playable WHERE ID = ${id}`, (error, results) => {
+      pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
         if (error) throw error;
-        res.status(201).json(results.rows[0]);
+        pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+          if (error) throw error;
+          res.status(201).json(results.rows[0]);
+        })
       })
     })
   })
@@ -99,7 +99,7 @@ const editUserByID = (req, res) => {
     if (error) throw error;
     pool.query(`UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`, (error, results) => {
       if (error) throw error;
-      pool.query(`SELECT * FROM Playable WHERE ID = ${id}`, (error, results) => {
+      pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
         if (error) throw error;
         res.status(200).json(results.rows[0]);
       })
@@ -108,10 +108,23 @@ const editUserByID = (req, res) => {
 }
 
 const deletePlayerByUserID = (req, res) => {
-  const userID = req.params.userID;
+  const userID = req.params.id;
   pool.query(`DELETE FROM Characters WHERE ID = ${userID}`, (error, results) => {
     if (error) throw error;
     res.status(200).send(`Character/Playable/Account was deleted with the ID ${userID}`);
+  })
+}
+
+let getNextID = function(table) {
+  return new Promise(function(resolve, reject) {
+    try {
+      pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
+        if (error) reject(error);
+        resolve(results.rows[0].max + 1)
+      })
+    } catch (error) {
+      console.error(error);
+    }
   })
 }
 

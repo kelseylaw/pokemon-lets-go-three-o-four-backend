@@ -66,7 +66,6 @@ const deletePokemon = (request, response) => {
   })
 }
 
-
 let getNextID = function(table) {
   return new Promise(function(resolve, reject) {
     try {
