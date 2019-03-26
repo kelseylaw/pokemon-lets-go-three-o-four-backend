@@ -65,6 +65,9 @@ app.post('/item', itemQueries.createItem);
 app.put('/item/:id', itemQueries.updateItem);
 app.delete('item/:id', itemQueries.deleteItem);
 
+// ItemTypes
+app.get('/itemType', itemTypeQueries.getItemTypes);
+
 // NPC
 app.get('/npc', npcQueries.getNPC);
 app.get("/npc/search", npcQueries.getNPCByLocatedAt);
