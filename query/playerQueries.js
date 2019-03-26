@@ -76,7 +76,47 @@ const getPokedexByUserID = (req, res) => {
 
 const getBadgesByUserID = (req, res) => {
   const userID = req.params.id;
-  pool.query(`SELECT * FROM GymBadges_Received WHERE Playable = ${userID}`, (error, results) => {
+  pool.query(`SELECT * FROM GymBadges_Received WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getHealRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Heals WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getSellsRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Sells WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getMoveAcrossRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM MoveAcross WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getCatchesRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Catches WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getItemUseRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Uses WHERE PlayableID = ${userID}`, (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
   })
@@ -155,6 +195,11 @@ module.exports = {
   getBattlesByUserID,
   getPokedexByUserID,
   getBadgesByUserID,
+  getHealRecordsByUserID,
+  getSellsRecordsByUserID,
+  getMoveAcrossRecordsByUserID,
+  getItemUseRecordsByUserID,
+  getCatchesRecordsByUserID,
   addNewUser,
   editUserByID,
   deletePlayerByUserID
