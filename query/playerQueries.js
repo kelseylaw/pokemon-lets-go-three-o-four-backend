@@ -49,7 +49,7 @@ const getPokemonsByUserID = (req, res) => {
 
 const getItemCount = (req, res) => {
   const playableID = parseInt(req.params.id);
-  pool.query(`SELECT Type AS ItemType, COUNT(*) AS Quantity FROM Items WHERE PlayableID = ${playableID} GROUP BY Type`, (error, results) => {
+  pool.query(`SELECT Type AS ItemType, COUNT(*) AS Quantity FROM Items WHERE PlayableID = ${playableID} AND Used = 0 GROUP BY Type`, (error, results) => {
     if (error) throw error
     res.status(200).json({"data": results.rows});
   })
@@ -185,15 +185,19 @@ const editUserByID = (req, res) => {
   })
 }
 
-const movePlayerLocationByID =(req, res) => {
+const movePlayerLocationByID = (req, res) => {
   const accountJSON = req.body;
   const id = accountJSON.id;
-  const locatedAt = accountJSON.location;
+  const locatedAt = accountJSON.locatedat;
+  const happenedAt = new Date().toISOString().substr(0,10);
   pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${id}`, (error, results) => {
     if (error) throw error;
-    pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+    pool.query(`INSERT INTO MoveAcross VALUES(${id}, '${locatedAt}', TO_DATE('${happenedAt}', 'YYYY-MM-DD'))`, (error, results) => {
       if (error) throw error;
-      res.status(200).json(results.rows[0]);
+      pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+        if (error) throw error;
+        res.status(200).json(results.rows[0]);
+      })
     })
   })
 }

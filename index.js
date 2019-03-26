@@ -62,11 +62,8 @@ app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
 // Items
-app.get('/item/:id', itemQueries.getItemById);
-app.get('/item/:playableID', itemQueries.getItemsFromPlayable);
 app.post('/item', itemQueries.createItem);
-app.put('/item/:id', itemQueries.updateItem);
-app.delete('item/:id', itemQueries.deleteItem);
+app.put('/item', itemQueries.useItem);
 
 // ItemTypes
 app.get('/itemType', itemTypeQueries.getItemTypes);
