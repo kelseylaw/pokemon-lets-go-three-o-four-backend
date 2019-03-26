@@ -11,7 +11,7 @@ const pool = new Pool({
 const getBadges = (req, res) => {
     pool.query('SELECT * FROM GymBadges_Received', (error, results) => {
         if (error) throw error;
-        res.status(200).json({data: results.rows})
+        res.status(200).json({"data": results.rows})
     })
 };
 

@@ -13,7 +13,7 @@ const getNPC = (request, response) => {
         if (error) {
             throw error;
         }
-        response.status(200).json({data: results.rows})
+        response.status(200).json({"data": results.rows})
     })
 };
 
@@ -43,7 +43,7 @@ const allNPCsInRegion = (req, res) => {
         if (error) {
             throw error;
         }
-        res.status(200).json({data: results.rows})
+        res.status(200).json({"data": results.rows})
     })
 };
 
