@@ -15,6 +15,10 @@ const itemTypeQueries = require('./query/itemTypeQueries');
 const buildingQuereis = require('./query/buildingQueries');
 const battleQueries = require('./query/battleQueries');
 const moveAcrossQueries = require('./query/moveAcrossQueries');
+const healQueries = require('./query/healQueries');
+const sellQueries = require('./query/sellQueries');
+const catchQueries = require('./query/catchesQueries');
+const usesQueries = require('./query/usesQueries');
 
 app.use(bodyParser.json())
 
