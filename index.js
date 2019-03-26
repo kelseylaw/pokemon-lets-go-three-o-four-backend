@@ -91,6 +91,8 @@ app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 
 // ItemTypes
 app.get('/itemType', itemTypeQueries.getItemTypes);
+app.put('/itemType/:type', itemTypeQueries.updateItemTypeCost);
+app.delete('/itemType/:type', itemTypeQueries.deleteItemType);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
