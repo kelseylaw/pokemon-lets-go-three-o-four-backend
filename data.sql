@@ -246,7 +246,7 @@ INSERT INTO Characters VALUES(10, 'Brock', 'Pewter City');
 INSERT INTO Characters VALUES(11, 'Sabrina', 'Saffron City');
 INSERT INTO Characters VALUES(12, 'Lt.Surge', 'Vermilion City');
 INSERT INTO Characters VALUES(13, 'Giovanni', 'Viridian City');
-INSERT INTO Characters VALUES(14, 'Professor Oak', 'Pallet Town');
+INSERT INTO Characters VALUES(14, 'Trainer Forest', 'Viridian Forest');
 INSERT INTO Characters VALUES(15, 'Trainer Cave', 'Diglett''s Cave');
 INSERT INTO Characters VALUES(16, 'Trainer Moon', 'Mt Moon');
 INSERT INTO Characters VALUES(17, 'Trainer Tunnel', 'Rock Tunnel');
@@ -261,7 +261,6 @@ INSERT INTO Characters VALUES(25, 'Trainer 6', 'Route 6');
 INSERT INTO Characters VALUES(26, 'Trainer 7', 'Route 7');
 INSERT INTO Characters VALUES(27, 'Trainer 8', 'Route 8');
 INSERT INTO Characters VALUES(28, 'Trainer 9', 'Route 9');
-INSERT INTO Characters VALUES(29, 'Trainer Forest', 'Viridian Forest');
 
 
 INSERT INTO Playable VALUES(1, 'red', 'redpass', TO_DATE('2019-02-11','YYYY-MM-DD'), 5, 5000, 0);
@@ -279,7 +278,7 @@ INSERT INTO NonPlayable VALUES(10, 'Gym Leader', 1000);
 INSERT INTO NonPlayable VALUES(11, 'Gym Leader', 1000);
 INSERT INTO NonPlayable VALUES(12, 'Gym Leader', 1000);
 INSERT INTO NonPlayable VALUES(13, 'Gym Leader', 1000);
-INSERT INTO NonPlayable VALUES(14, 'Non Trainer', 0);
+INSERT INTO NonPlayable VALUES(14, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(15, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(16, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(17, 'Trainer', 500);
@@ -294,7 +293,6 @@ INSERT INTO NonPlayable VALUES(25, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(26, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(27, 'Trainer', 500);
 INSERT INTO NonPlayable VALUES(28, 'Trainer', 500);
-INSERT INTO NonPlayable VALUES(29, 'Trainer', 500);
 
 
 INSERT INTO ItemTypes VALUES(1,'Poke Ball', 200);

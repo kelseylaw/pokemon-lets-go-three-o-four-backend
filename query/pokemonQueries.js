@@ -72,6 +72,15 @@ const deletePokemon = (request, response) => {
   })
 }
 
+const countPokemonBySpecies = (req, res) => {
+  const species = req.params.speciesid;
+
+  pool.query(`SELECT count(*) FROM pokemon group by pokedexnum having pokedexnum = ${species}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results.rows[0].count)
+  })
+}
+
 let getNextID = function(table) {
   return new Promise(function(resolve, reject) {
     try {
@@ -90,5 +99,6 @@ module.exports = {
   getPokemonByID,
   createPokemon,
   updatePokemon,
-  deletePokemon
+  deletePokemon,
+  countPokemonBySpecies,
 }

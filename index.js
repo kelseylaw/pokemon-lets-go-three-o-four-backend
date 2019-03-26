@@ -11,6 +11,7 @@ const itemQueries = require('./query/itemQueries');
 const npcQueries = require('./query/npcQueries');
 const speciesQueries = require('./query/speciesQueries');
 const badgeQueries = require('./query/badgeQueries');
+const itemTypeQueries = require('./query/itemTypeQueries');
 
 app.use(bodyParser.json())
 
@@ -41,6 +42,7 @@ app.get('/pokemon/:id', pokemonQueries.getPokemonByID)
 app.post('/pokemon', pokemonQueries.createPokemon)
 app.put('/pokemon/:id', pokemonQueries.updatePokemon)
 app.delete('/pokemon/:id', pokemonQueries.deletePokemon)
+app.get('/pokemon/:speciesid/population', pokemonQueries.countPokemonBySpecies)
 
 // MapRegion
 app.get("/mapRegion", mapQueries.getMapRegions)
@@ -61,7 +63,7 @@ app.post('/npc', npcQueries.createNPC);
 app.put('/npc/:id', npcQueries.updateNPC);
 app.delete('/npc/:id', npcQueries.deleteNPC);
 
-// species
+// Species
 app.get("/species", speciesQueries.getSpecies);
 app.get("/species/search", speciesQueries.getSpeciesFoundAt);
 app.get("/species/:id", speciesQueries.getSpeciesID);
