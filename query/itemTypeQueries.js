@@ -8,5 +8,13 @@ const pool = new Pool({
   port: 5432,
 })
 
+const getItemTypes = (req, res) => {
+  pool.query('SELECT * FROM ItemTypes', (error, results) => {
+    if (error) throw error
+    res.status(200).json({ "data": results.rows });
+  })
+}
+
 module.exports = {
+  getItemTypes
 }
