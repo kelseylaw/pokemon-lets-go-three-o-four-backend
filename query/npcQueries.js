@@ -11,7 +11,7 @@ const pool = new Pool({
 const getNPC = (request, response) => {
     pool.query('SELECT * from nonPlayable', (error, results) => {
         if (error) {
-            throw error
+            throw error;
         }
         response.status(200).json(results.rows)
     })
@@ -21,39 +21,44 @@ const getNPCByID = (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * from nonPlayable WHERE id = $1',[id], (error, results) => {
         if (error) {
-            throw error
+            throw error;
         }
-        res.status(200).json(results.rows)
+        res.status(200).json(results.rows[0])
     })
 };
 
 const allNPCsInRegion = (req, res) => {
     const region = req.params.foundAt;
-    pool.query('SELECT * from nonPlayable np, characters c WHERE np.id=c.id AND c.LocateAt=$1',
+    pool.query('SELECT * from NonPlayable INNER JOIN Characters ON NonPlayable.id=Characters.id WHERE Characters.LocateAt=$1',
         [region], (error, results) => {
         if (error) {
-            throw error
+            throw error;
         }
         res.status(200).json(results.rows)
     })
 };
 
 const createNPC = (req, res) => {
-    const id = getNextID('nonPlayable');
     const {name, mapRegion, role, reward} = req.body;
-    pool.query('INSERT INTO Characters VALUES ($1, $2, $3)',
-        [id, name, mapRegion], (error, results) => {
-            if (error) {
-                throw error;
-            }
-        });
-    pool.query('INSERT INTO nonPlayable VALUES ($1, $2, $3)',
-        [id, role, reward], (error, results) => {
-            if (error) {
-                throw error
-            }
-            res.status(201).send(`NonPlayable added with ID: ${id}`)
-    })
+    getNextID('nonPlayable').then(function (id) {
+        pool.query('INSERT INTO Characters VALUES ($1, $2, $3)',
+            [id, name, mapRegion], (error, results) => {
+                if (error) {
+                    throw error;
+                }
+            });
+        pool.query('INSERT INTO nonPlayable VALUES ($1, $2, $3)',
+            [id, role, reward], (error, results) => {
+                if (error) {
+                    throw error
+                }
+                pool.query('SELECT * FROM NonPLayable WHERE ID = $1', [id], (error, results) => {
+                    if (error) throw error;
+                    res.status(200).json(results.rows[0])
+                })
+        })
+    });
+
 };
 
 const updateNPC = (request, response) => {
@@ -64,9 +69,12 @@ const updateNPC = (request, response) => {
         'UPDATE nonPlayable SET role = $1, reward = $2 WHERE id = $3', [role, reward, id],
         (error, results) => {
             if (error) {
-                throw error
+                throw error;
             }
-            response.status(200).send(`NonPlayable modified with ID: ${id}`)
+            pool.query('SELECT * FROM NonPlayable WHERE id=$1', [id], (error, results) => {
+                if (error) throw error;
+                response.status(200).json(results.rows[0])
+            })
         }
     )
 };
