@@ -95,7 +95,10 @@ const deleteNPC = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).send(`NonPlayable deleted with ID: ${id}`)
+        pool.query('DELETE FROM Characters WHERE id = $1', [id], (error, results) => {
+            if (error) throw error;
+            response.status(200).send(`NonPlayable deleted with ID: ${id}`);
+        })
     })
 };
 
