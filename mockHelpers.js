@@ -96,6 +96,15 @@ const findNPCbyID = (npcID) => {
     }
 };
 
+const filterNPCByLocatedAt = (locatedAt) => {
+    const data = npc.npc.filter(n => n.locatedAt === locatedAt);
+    if (data.length > 0) {
+        return data;
+    } else {
+        return [];
+    }
+}
+
 const deleteNPC = (npcID) => {
     for (let i = 0; i < npc.npc.length; i++) {
         if (npc.npc[i].id === npcID) {
@@ -126,5 +135,6 @@ module.exports = {
     deleteItem,
     findNPCbyID,
     deleteNPC,
-    getBadgesFromKey
+    getBadgesFromKey,
+    filterNPCByLocatedAt
 }
