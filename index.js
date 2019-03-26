@@ -37,6 +37,7 @@ app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
 app.get("/species", speciesQueries.getSpecies);
+app.get("/species/:id", speciesQueries.getSpeciesID);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
