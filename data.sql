@@ -5,7 +5,6 @@ DROP TABLE Battle;
 DROP TABLE Heals;
 DROP TABLE Sells;
 DROP TABLE GymBadges_Received;
-DROP TABLE Pokedex;
 DROP TABLE OwnedBy;
 DROP TABLE Pokemon;
 DROP TABLE Species;
@@ -96,13 +95,6 @@ CREATE TABLE OwnedBy(
 	FOREIGN KEY (OwnerID) REFERENCES Characters(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Pokedex(
-	OwnedBy int PRIMARY KEY, 
-	Caught int,
-	Seen int,
-	FOREIGN KEY (OwnedBy) REFERENCES Characters(ID) ON DELETE CASCADE
-);
-
 CREATE TABLE GymBadges_Received(
 	BadgeID int,
 	Name varchar(32) NOT NULL,
@@ -145,10 +137,10 @@ CREATE TABLE Battle(
 );
 
 CREATE TABLE MoveAcross(
+	ID int PRIMARY KEY,
 	PlayableID int,
 	MapName varchar(32),
 	HappenedAt timestamp NOT NULL,
-	PRIMARY KEY (PlayableID, MapName),
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE,
 	FOREIGN KEY (MapName) REFERENCES MapRegions(Name) ON DELETE CASCADE
 );
@@ -233,7 +225,7 @@ INSERT INTO Building_Contained VALUES(26, 'Viridian City', 'Gym');
 INSERT INTO Building_Contained VALUES(27, 'Pallet Town', 'Lab');
 
 
-INSERT INTO Characters VALUES(1, 'Red', 'Pallet Town');
+INSERT INTO Characters VALUES(1, 'Red', 'Fuchsia City');
 INSERT INTO Characters VALUES(2, 'Blue', 'Pallet Town');
 INSERT INTO Characters VALUES(3, 'Green', 'Pallet Town');
 INSERT INTO Characters VALUES(4, 'Yellow', 'Pallet Town');
@@ -486,13 +478,6 @@ INSERT INTO OwnedBy VALUES(4, 4);
 INSERT INTO OwnedBy VALUES(5, 5);
 
 
-INSERT INTO Pokedex VALUES(1, 1, 30);
-INSERT INTO Pokedex VALUES(2, 1, 1);
-INSERT INTO Pokedex VALUES(3, 1, 1);
-INSERT INTO Pokedex VALUES(4, 1, 1);
-INSERT INTO Pokedex VALUES(5, 1, 1);
-
-
 INSERT INTO GymBadges_Received VALUES(1, 'Boulder Badge', 1, 10, TO_TIMESTAMP('2019-02-11 17:00:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
 INSERT INTO GymBadges_Received VALUES(2, 'Cascade Badge', 1, 7, TO_TIMESTAMP('2019-02-11 18:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
 INSERT INTO GymBadges_Received VALUES(3, 'Thunder Badge', 1, 12, TO_TIMESTAMP('2019-02-11 20:45:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
@@ -521,11 +506,11 @@ INSERT INTO Battle VALUES(1, 6, TO_TIMESTAMP('2019-02-12 9:55:00.00', 'YYYY-MM-D
 INSERT INTO Battle VALUES(1, 9, TO_TIMESTAMP('2019-02-12 11:55:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
 
 
-INSERT INTO MoveAcross VALUES(1, 'Pewter City', TO_TIMESTAMP('2019-02-11 16:44:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
-INSERT INTO MoveAcross VALUES(1, 'Cerulean City', TO_TIMESTAMP('2019-02-11 18:19:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
-INSERT INTO MoveAcross VALUES(1, 'Vermilion City', TO_TIMESTAMP('2019-02-11 20:34:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
-INSERT INTO MoveAcross VALUES(1, 'Celadon City', TO_TIMESTAMP('2019-02-12 9:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
-INSERT INTO MoveAcross VALUES(1, 'Fuchsia City', TO_TIMESTAMP('2019-02-12 11:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
+INSERT INTO MoveAcross VALUES(1, 1, 'Pewter City', TO_TIMESTAMP('2019-02-11 16:44:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
+INSERT INTO MoveAcross VALUES(2, 1, 'Cerulean City', TO_TIMESTAMP('2019-02-11 18:19:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
+INSERT INTO MoveAcross VALUES(3, 1, 'Vermilion City', TO_TIMESTAMP('2019-02-11 20:34:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
+INSERT INTO MoveAcross VALUES(4, 1, 'Celadon City', TO_TIMESTAMP('2019-02-12 9:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
+INSERT INTO MoveAcross VALUES(5, 1, 'Fuchsia City', TO_TIMESTAMP('2019-02-12 11:49:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
 
 
 INSERT INTO Catches VALUES(1, 2, 6, TO_TIMESTAMP('2019-02-11 16:30:00.00', 'YYYY-MM-DD HH24:MI:SS.FF')); 
