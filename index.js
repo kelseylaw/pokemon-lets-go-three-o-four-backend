@@ -7,15 +7,9 @@ const port = 3000
 const pokemonQueries = require('./query/pokemonQueries')
 const playerQueries = require('./query/playerQueries')
 const mapQueries = require('./query/mapQueries')
-<<<<<<< HEAD
-const battleQueries = require('./query/battleQueries')
-const itemQueries = require('./query/itemQueries')
-const npcQueries = require('./query/npcQueries')
-=======
 const itemQueries = require('./query/itemQueries');
 const npcQueries = require('./query/npcQueries');
 const speciesQueries = require('./query/speciesQueries');
->>>>>>> master
 
 app.use(bodyParser.json())
 
