@@ -76,13 +76,70 @@ const getPokedexByUserID = (req, res) => {
 
 const getBadgesByUserID = (req, res) => {
   const userID = req.params.id;
-  pool.query(`SELECT * FROM GymBadges_Received WHERE Playable = ${userID}`, (error, results) => {
+  pool.query(`SELECT * FROM GymBadges_Received WHERE PlayableID = ${userID}`, (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
   })
 }
 
-const addNewUser = (req, res) => {
+const getHealRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Heals WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getSellsRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Sells WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getMoveAcrossRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM MoveAcross WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getCatchesRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Catches WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getItemUseRecordsByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT * FROM Uses WHERE PlayableID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getSpeciesPokemonsByUserID = (req, res) => {
+  const ownerID = req.params.id;
+  const speciesID = req.params.speciesid;
+  pool.query(`SELECT Pokemon.ID, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} AND Pokemon.PokedexNum = ${speciesID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getNumberSpeciesCaughtByUserID = (req, res) => {
+  const ownerID = req.params.id;
+  pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results.rows[0]);
+  })
+}
+
+const addNewUserNewPokedex = (req, res) => {
   const accountJSON = req.body;
   const name = accountJSON.characterName;
   const username = accountJSON.username;
@@ -97,9 +154,12 @@ const addNewUser = (req, res) => {
       if (error) throw error;
       pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
         if (error) throw error;
-        pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+        pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0')`, (error, results) => {
           if (error) throw error;
-          res.status(201).json(results.rows[0]);
+          pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+            if (error) throw error;
+            res.status(201).json(results.rows[0]);
+          })
         })
       })
     })
@@ -121,6 +181,19 @@ const editUserByID = (req, res) => {
         if (error) throw error;
         res.status(200).json(results.rows[0]);
       })
+    })
+  })
+}
+
+const movePlayerLocationByID =(req, res) => {
+  const accountJSON = req.body;
+  const id = accountJSON.id;
+  const locatedAt = accountJSON.location;
+  pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${id}`, (error, results) => {
+    if (error) throw error;
+    pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows[0]);
     })
   })
 }
@@ -155,7 +228,15 @@ module.exports = {
   getBattlesByUserID,
   getPokedexByUserID,
   getBadgesByUserID,
-  addNewUser,
+  getHealRecordsByUserID,
+  getSellsRecordsByUserID,
+  getMoveAcrossRecordsByUserID,
+  getItemUseRecordsByUserID,
+  getCatchesRecordsByUserID,
+  getSpeciesPokemonsByUserID,
+  getNumberSpeciesCaughtByUserID,
+  addNewUserNewPokedex,
   editUserByID,
+  movePlayerLocationByID,
   deletePlayerByUserID
 }
