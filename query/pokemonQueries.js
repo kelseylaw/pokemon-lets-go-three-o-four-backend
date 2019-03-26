@@ -15,14 +15,6 @@ const getPokemons = (req, res) => {
   })
 }
 
-const getPokemonsByUserID = (req, res) => {
-  const ownerID = parseInt(req.params.id);
-  pool.query(`SELECT Pokemon.ID, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID =  ${ownerID}`, (error, results) => {
-    if (error) throw error
-    res.status(200).json(results.rows)
-  })
-}
-
 const getPokemonByID = (request, response) => {
   const id = parseInt(request.params.id)
 
@@ -65,7 +57,10 @@ const updatePokemon = (request, response) => {
       if (error) {
         throw error
       }
-      response.status(200).send(`User modified with ID: ${id}`)
+      pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+        if (error) throw error;
+        response.status(200).json(results.rows[0])
+      })
     }
   )
 }
@@ -99,7 +94,6 @@ let getNextID = function(table) {
 
 module.exports = {
   getPokemons,
-  getPokemonsByUserID,
   getPokemonByID,
   createPokemon,
   updatePokemon,
