@@ -8,7 +8,7 @@ const pool = new Pool({
     port: 5432,
 });
 const getItemById = (request, response) => {
-    const id = request.params.id;
+    const id = parseInt(request.params.id);
     pool.query('SELECT * from Items WHERE id = $1',[id], (error, results) => {
         if (error) {
             throw error;
@@ -18,12 +18,12 @@ const getItemById = (request, response) => {
 };
 
 const getItemsFromPlayable = (request, response) => {
-    const id = request.params.id;
+    const id = parseInt(request.params.playableID);
     pool.query('SELECT * from Items WHERE PlayableID = $1',[id], (error, results) => {
         if (error) {
             throw error;
         }
-        response.status(200).json(results.rows)
+        response.status(200).json({"data": results.rows})
     })
 };
 

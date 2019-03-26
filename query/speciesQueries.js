@@ -11,7 +11,7 @@ const pool = new Pool({
 const getSpecies = (req, res) => {
   pool.query('SELECT * FROM Species', (error, results) => {
     if (error) throw error
-    res.status(200).json(results.rows)
+    res.status(200).json({"data": results.rows})
   })
 }
 
@@ -22,7 +22,7 @@ const getSpeciesID = (req, res) => {
     if (error) {
       throw error
     }
-    res.status(200).json(results.rows)
+    res.status(200).json({"data": results.rows})
   })
 }
 
@@ -32,7 +32,7 @@ const getSpeciesFoundAt = (req, res) => {
     if (error) {
       throw error
     }
-    res.status(200).json(results.rows)
+    res.status(200).json({"data": results.rows})
   })
 }
 

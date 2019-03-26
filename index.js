@@ -31,7 +31,17 @@ app.get('/', (request, response) => {
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/:id", playerQueries.findUserByID)
-app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID);
+app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
+app.get("/user/:id/itemCount", playerQueries.getItemCount)
+app.get("/user/:id/pokedex", playerQueries.getPokedexByUserID)
+app.get("/user/:id/gymBadges", playerQueries.getBadgesByUserID)
+app.get("/user/:id/heals", playerQueries.getHealRecordsByUserID)
+app.get("/user/:id/sells", playerQueries.getSellsRecordsByUserID)
+app.get("/user/:id/catches", playerQueries.getCatchesRecordsByUserID)
+app.get("/user/:id/movements", playerQueries.getMoveAcrossRecordsByUserID)
+app.get("/user/:id/itemUses", playerQueries.getItemUseRecordsByUserID)
+app.get("/user/:id/pokemons/:speciesid", playerQueries.getSpeciesPokemonsByUserID)
+app.get("/user/:id/speciesCount", playerQueries.getNumberSpeciesCaughtByUserID)
 app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)
@@ -55,8 +65,12 @@ app.post('/item', itemQueries.createItem);
 app.put('/item/:id', itemQueries.updateItem);
 app.delete('item/:id', itemQueries.deleteItem);
 
+// ItemTypes
+app.get('/itemType', itemTypeQueries.getItemTypes);
+
 // NPC
 app.get('/npc', npcQueries.getNPC);
+app.get("/npc/search", npcQueries.getNPCByLocatedAt);
 app.get('/npc/:id', npcQueries.getNPCByID);
 app.get('/npc/:foundAt', npcQueries.allNPCsInRegion);
 app.post('/npc', npcQueries.createNPC);
@@ -76,7 +90,7 @@ app.put('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.updateBadge);
 app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 
 // ItemTypes
-app.get('/itemType', itemTypeQueries.getTypes);
+app.get('/itemType', itemTypeQueries.getItemTypes);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
