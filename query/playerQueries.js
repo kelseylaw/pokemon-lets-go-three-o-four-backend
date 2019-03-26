@@ -187,16 +187,18 @@ const editUserByID = (req, res) => {
 
 const movePlayerLocationByID = (req, res) => {
   const accountJSON = req.body;
-  const id = accountJSON.id;
+  const playableID = accountJSON.id;
   const locatedAt = accountJSON.locatedat;
   const happenedAt = new Date().toISOString().substr(0,10);
-  pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${id}`, (error, results) => {
+  pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${playableID}`, (error, results) => {
     if (error) throw error;
-    pool.query(`INSERT INTO MoveAcross VALUES(${id}, '${locatedAt}', TO_DATE('${happenedAt}', 'YYYY-MM-DD'))`, (error, results) => {
-      if (error) throw error;
-      pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+    getNextID('MoveAcross').then(function(id) {
+      pool.query(`INSERT INTO MoveAcross VALUES(${id}, ${playableID}, '${locatedAt}', TO_DATE('${happenedAt}', 'YYYY-MM-DD'))`, (error, results) => {
         if (error) throw error;
-        res.status(200).json(results.rows[0]);
+        pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${playableID}`, (error, results) => {
+          if (error) throw error;
+          res.status(200).json(results.rows[0]);
+        })
       })
     })
   })
