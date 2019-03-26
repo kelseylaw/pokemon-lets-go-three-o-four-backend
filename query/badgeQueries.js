@@ -46,7 +46,8 @@ const updateBadge = (request, response) => {
     const badgeID = parseInt(request.params.badgeID);
     const playerID = parseInt(request.params.playerID);
     const npcID = parseInt(request.params.npcID);
-    const {name, happenedAt} = request.body;
+    const happenedAt = new Date().toISOString().substr(0,10);
+    const name = request.body;
     pool.query('UPDATE GymBadges_Received SET Name = $2, happenedAt = $5 WHERE BadgeID = $1 AND PlayableID = $3 AND NonPlayableID = $4',
         [badgeID, name, playerID, npcID, happenedAt], (error, result) => {
         if (error) throw error;

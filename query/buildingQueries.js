@@ -18,10 +18,6 @@ const getBuildingFromID = (request, response) => {
     })
 };
 
-const buildingItemsSold = (request, response) => {
-
-};
-
 const updateBuilding = (request, response) => {
     const id = parseInt(request.params.id);
     const {region, type} = request.body;
