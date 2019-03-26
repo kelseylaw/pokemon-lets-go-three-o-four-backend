@@ -61,6 +61,8 @@ app.put('/npc/:id', npcQueries.updateNPC);
 app.delete('/npc/:id', npcQueries.deleteNPC);
 
 app.get("/species", speciesQueries.getSpecies);
+app.get("/species/search", speciesQueries.getSpeciesFoundAt);
+app.get("/species/:id", speciesQueries.getSpeciesID);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)

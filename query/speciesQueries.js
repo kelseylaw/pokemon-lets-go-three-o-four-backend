@@ -15,6 +15,48 @@ const getSpecies = (req, res) => {
   })
 }
 
+const getSpeciesID = (req, res) => {
+  const id = parseInt(req.params.id)
+
+  pool.query('SELECT * FROM species WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  })
+}
+
+const getSpeciesFoundAt = (req, res) => {
+  condBuilder('species', req.query);
+  pool.query(condBuilder('species', req.query), (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  })
+}
+
+// to build a sql query table is which table you are selecting form 
+// json is the req.query you got from endpoint
+// usage example see getSpeciesFoundAt
+function condBuilder(table, json) {
+  let length = parseInt(Object.keys(json).length);
+  const keys =  Object.keys(json);
+  const values = Object.values(json);
+  let counter = 0;
+  let query = `SELECT * from ${table} WHERE ${keys[counter]} = '${values[counter]}'`;
+  counter++;
+  length--;
+  while (length !== 0) {
+    query = query + ` AND ${keys[counter]} = '${values[counter]}'`;
+    counter++;
+    length--;
+  }
+  return query;
+}
+
 module.exports = {
 	getSpecies,
+  getSpeciesID,
+  getSpeciesFoundAt,
 }

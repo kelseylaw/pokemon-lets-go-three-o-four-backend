@@ -1,26 +1,26 @@
 var ownedBy = [
   {
-      "PokemonID": 1,
-      "OwnerID": 2
+    pokemonId: 1,
+    ownerId: 1
   },
   {
-    "PokemonID": 2,
-    "OwnerID": 2
+    pokemonId: 2,
+    ownerId: 1
   },
   {
-    "PokemonID": 3,
-    "OwnerID": 3
+    pokemonId: 3,
+    ownerId: 1
   },
   {
-    "PokemonID": 4,
-    "OwnerID": 3
+    pokemonId: 4,
+    ownerId: 3
   },
   {
-    "PokemonID": 5,
-    "OwnerID": 2
+    pokemonId: 5,
+    ownerId: 2
   }
-]
-  
-  module.exports = {
-    ownedBy: ownedBy
-  }
+];
+
+module.exports = {
+  ownedBy: ownedBy
+};

@@ -53,7 +53,7 @@ app.get("/user/:id", (req, res) => {
 });
 
 // Not working at the moment
-app.patch("/user/:id", (req, res) => {
+app.put("/user/:id", (req, res) => {
   const accountId = req.params.id;
   const newLocation = req.body.location;
   res.json(req.body);
@@ -63,7 +63,7 @@ app.get("/user/:id/pokemons", (req, res) => {
   const playableID = parseInt(req.params.id);
   const pokemonIDs = mockHelpers.filterPokemonsByUserID(playableID);
   const array = pokemonIDs.map(pokemonID => mockHelpers.findPokemonByID(pokemonID));
-  res.json(array);
+  res.json({ data: array});
 });
 
 app.get("/user/:id/itemCount", (req, res) => {
@@ -113,15 +113,21 @@ app.get("/npc", (req, res) => {
   res.json({data: npc.npc})
 });
 
-app.get("/npc/:id", (req, res) => {
-  const npcID = parseInt(req.params.id);
-  const data = mockHelpers.findNPCbyID(npcID);
-  if (data !== null) {
-    res.json(data);
-  } else {
-    res.json({ error: `${npcID} does not exist!` });
-  }
-});
+// app.get("/npc/:id", (req, res) => {
+//   const npcID = parseInt(req.params.id);
+//   const data = mockHelpers.findNPCbyID(npcID);
+//   if (data !== null) {
+//     res.json(data);
+//   } else {
+//     res.json({ error: `${npcID} does not exist!` });
+//   }
+// });
+
+app.get("/npc/search", (req, res) => {
+  const locatedAt = req.query.locatedAt;
+  const data = mockHelpers.filterNPCByLocatedAt(locatedAt);
+  res.json({ data: data });
+})
 
 //app.post("/npc/:id/:reward", (req, res) => {})
 
