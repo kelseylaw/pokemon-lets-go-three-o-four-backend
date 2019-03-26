@@ -122,6 +122,23 @@ const getItemUseRecordsByUserID = (req, res) => {
   })
 }
 
+const getSpeciesPokemonsByUserID = (req, res) => {
+  const ownerID = req.params.id;
+  const speciesID = req.params.speciesid;
+  pool.query(`SELECT Pokemon.ID, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} AND Pokemon.PokedexNum = ${speciesID}`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+}
+
+const getNumberSpeciesCaughtByUserID = (req, res) => {
+  const ownerID = req.params.id;
+  pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
+    if (error) throw error;
+    res.status(200).json(results.rows[0]);
+  })
+}
+
 const addNewUser = (req, res) => {
   const accountJSON = req.body;
   const name = accountJSON.characterName;
@@ -200,6 +217,8 @@ module.exports = {
   getMoveAcrossRecordsByUserID,
   getItemUseRecordsByUserID,
   getCatchesRecordsByUserID,
+  getSpeciesPokemonsByUserID,
+  getNumberSpeciesCaughtByUserID,
   addNewUser,
   editUserByID,
   deletePlayerByUserID
