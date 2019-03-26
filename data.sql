@@ -5,7 +5,6 @@ DROP TABLE Battle;
 DROP TABLE Heals;
 DROP TABLE Sells;
 DROP TABLE GymBadges_Received;
-DROP TABLE Pokedex;
 DROP TABLE OwnedBy;
 DROP TABLE Pokemon;
 DROP TABLE Species;
@@ -94,13 +93,6 @@ CREATE TABLE OwnedBy(
 	OwnerID int NOT NULL,
 	FOREIGN KEY (PokemonID) REFERENCES Pokemon(ID) ON DELETE CASCADE,
 	FOREIGN KEY (OwnerID) REFERENCES Characters(ID) ON DELETE CASCADE
-);
-
-CREATE TABLE Pokedex(
-	OwnedBy int PRIMARY KEY, 
-	Caught int,
-	Seen int,
-	FOREIGN KEY (OwnedBy) REFERENCES Characters(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE GymBadges_Received(
@@ -233,7 +225,7 @@ INSERT INTO Building_Contained VALUES(26, 'Viridian City', 'Gym');
 INSERT INTO Building_Contained VALUES(27, 'Pallet Town', 'Lab');
 
 
-INSERT INTO Characters VALUES(1, 'Red', 'Pallet Town');
+INSERT INTO Characters VALUES(1, 'Red', 'Fuchsia City');
 INSERT INTO Characters VALUES(2, 'Blue', 'Pallet Town');
 INSERT INTO Characters VALUES(3, 'Green', 'Pallet Town');
 INSERT INTO Characters VALUES(4, 'Yellow', 'Pallet Town');
@@ -484,13 +476,6 @@ INSERT INTO OwnedBy VALUES(3, 2);
 INSERT INTO OwnedBy VALUES(1, 3);
 INSERT INTO OwnedBy VALUES(4, 4);
 INSERT INTO OwnedBy VALUES(5, 5);
-
-
-INSERT INTO Pokedex VALUES(1, 1, 30);
-INSERT INTO Pokedex VALUES(2, 1, 1);
-INSERT INTO Pokedex VALUES(3, 1, 1);
-INSERT INTO Pokedex VALUES(4, 1, 1);
-INSERT INTO Pokedex VALUES(5, 1, 1);
 
 
 INSERT INTO GymBadges_Received VALUES(1, 'Boulder Badge', 1, 10, TO_TIMESTAMP('2019-02-11 17:00:00.00', 'YYYY-MM-DD HH24:MI:SS.FF'));
