@@ -11,14 +11,14 @@ const pool = new Pool({
 const getBadges = (req, res) => {
     pool.query('SELECT * FROM GymBadges_Received', (error, results) => {
         if (error) throw error;
-        res.status(200).json(results.rows)
+        res.status(200).json({data: results.rows})
     })
 };
 
 const getBadgesFromID = (req, res) => {
-    const badgeID = req.params.badgeID;
-    const playerID = req.params.playerID;
-    const npcID = req.params.npcID;
+    const badgeID = parseInt(request.params.badgeID);
+    const playerID = parseInt(request.params.playerID);
+    const npcID = parseInt(request.params.npcID);
     pool.query('SELECT * FROM GymBadges_Received WHERE badgeID = $1 AND playableID = $2 AND NonPlayableID = $3',
         [badgeID, playerID, npcID], (error, results) => {
         if (error) throw error;
@@ -43,9 +43,9 @@ const createBadge = (req, res) => {
 };
 
 const updateBadge = (request, response) => {
-    const badgeID = request.params.badgeID;
-    const playerID = request.params.playerID;
-    const npcID = request.params.npcID;
+    const badgeID = parseInt(request.params.badgeID);
+    const playerID = parseInt(request.params.playerID);
+    const npcID = parseInt(request.params.npcID);
     const {name, happenedAt} = request.body;
     pool.query('UPDATE GymBadges_Received SET Name = $2, happenedAt = $5 WHERE BadgeID = $1 AND PlayableID = $3 AND NonPlayableID = $4',
         [badgeID, name, playerID, npcID, happenedAt], (error, result) => {
@@ -55,9 +55,9 @@ const updateBadge = (request, response) => {
 };
 
 const deleteBadge = (request, response) => {
-    const badgeID = request.params.badgeID;
-    const playerID = request.params.playerID;
-    const npcID = request.params.npcID;
+    const badgeID = parseInt(request.params.badgeID);
+    const playerID = parseInt(request.params.playerID);
+    const npcID = parseInt(request.params.npcID);
     pool.query('DELETE FROM GymBadges_Received WHERE BadgeID = $1 AND PlayableID = $2, AND NonPlayableID = $3',
         [badgeID, playerID, npcID], (error, result) => {
         if (error) throw error;

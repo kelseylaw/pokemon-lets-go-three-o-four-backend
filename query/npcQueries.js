@@ -13,12 +13,12 @@ const getNPC = (request, response) => {
         if (error) {
             throw error;
         }
-        response.status(200).json(results.rows)
+        response.status(200).json({data: results.rows})
     })
 };
 
 const getNPCByID = (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(request.params.id);
     pool.query('SELECT * from nonPlayable WHERE id = $1',[id], (error, results) => {
         if (error) {
             throw error;
@@ -34,7 +34,7 @@ const allNPCsInRegion = (req, res) => {
         if (error) {
             throw error;
         }
-        res.status(200).json(results.rows)
+        res.status(200).json({data: results.rows})
     })
 };
 
