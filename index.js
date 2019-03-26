@@ -7,9 +7,15 @@ const port = 3000
 const pokemonQueries = require('./query/pokemonQueries')
 const playerQueries = require('./query/playerQueries')
 const mapQueries = require('./query/mapQueries')
+<<<<<<< HEAD
 const battleQueries = require('./query/battleQueries')
 const itemQueries = require('./query/itemQueries')
 const npcQueries = require('./query/npcQueries')
+=======
+const itemQueries = require('./query/itemQueries');
+const npcQueries = require('./query/npcQueries');
+const speciesQueries = require('./query/speciesQueries');
+>>>>>>> master
 
 app.use(bodyParser.json())
 
@@ -29,9 +35,7 @@ app.get('/', (request, response) => {
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/:id", playerQueries.findUserByID)
-app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
-app.get("/user/:id/battles", playerQueries.getBattlesByUserID)
-app.get("/user/:id/itemCount", playerQueries.getItemCount)
+app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID);
 app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)
@@ -61,6 +65,8 @@ app.get('/npc/:foundAt', npcQueries.allNPCsInRegion);
 app.post('/npc', npcQueries.createNPC);
 app.put('/npc/:id', npcQueries.updateNPC);
 app.delete('/npc/:id', npcQueries.deleteNPC);
+
+app.get("/species", speciesQueries.getSpecies);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)

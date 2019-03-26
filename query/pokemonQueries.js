@@ -52,9 +52,13 @@ const updatePokemon = (request, response) => {
     'UPDATE pokemon SET nickname = $1, pokedexnum = $2, status = $3, battlesdone = $4 WHERE id = $5',
     [nickname, pokedexnum, status, battlesdone, id],
     (error, results) => {
-      if (error) throw error;
-      // TODO: Needs to return Pokemon object
-      response.status(200).send(`User modified with ID: ${id}`)
+      if (error) {
+        throw error
+      }
+      pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+        if (error) throw error;
+        response.status(200).json(results.rows[0])
+      })
     }
   )
 }
