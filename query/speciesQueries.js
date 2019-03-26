@@ -27,15 +27,32 @@ const getSpeciesID = (req, res) => {
 }
 
 const getSpeciesFoundAt = (req, res) => {
-  const loc = req.params.foundAt;
-
-  console.log(loc);
-  pool.query(`SELECT * FROM species WHERE foundat = '${loc}'`, (error, results) => {
+  condBuilder('species', req.query);
+  pool.query(condBuilder('species', req.query), (error, results) => {
     if (error) {
       throw error
     }
     res.status(200).json(results.rows)
   })
+}
+
+// to build a sql query table is which table you are selecting form 
+// json is the req.query you got from endpoint
+// usage example see getSpeciesFoundAt
+function condBuilder(table, json) {
+  let length = parseInt(Object.keys(json).length);
+  const keys =  Object.keys(json);
+  const values = Object.values(json);
+  let counter = 0;
+  let query = `SELECT * from ${table} WHERE ${keys[counter]} = '${values[counter]}'`;
+  counter++;
+  length--;
+  while (length !== 0) {
+    query = query + ` AND ${keys[counter]} = '${values[counter]}'`;
+    counter++;
+    length--;
+  }
+  return query;
 }
 
 module.exports = {
