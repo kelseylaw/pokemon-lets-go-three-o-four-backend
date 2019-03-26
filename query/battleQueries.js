@@ -48,6 +48,7 @@ const deleteBattle = (req, res) => {
 
 module.exports = {
   getBattles,
+  getBattleFromID,
   addBattle,
   deleteBattle
 }
