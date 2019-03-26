@@ -145,16 +145,16 @@ const addNewUserNewPokedex = (req, res) => {
   const username = accountJSON.username;
   const password = accountJSON.password;
   const createdAt = new Date().toISOString().substr(0,10);
-  const badgesOwned = accountJSON.badgesOwned;
-  const balance = accountJSON.balance;
-  const admin = accountJSON.admin;
+  const badgesOwned = "badgesOwned" in accountJSON ? accountJSON.badgesOwned : 0;
+  const balance = "balance" in accountJSON ? accountJSON.balance : 2000;
+  const admin = "admin" in accountJSON ? accountJSON.admin : 0;
 
   getNextID('Characters').then(function(id) {
     pool.query(`INSERT INTO Characters VALUES(${id}, '${name}', 'Pallet Town')`, (error, results) => {
       if (error) throw error;
       pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
         if (error) throw error;
-        pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0')`, (error, results) => {
+        pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0)`, (error, results) => {
           if (error) throw error;
           pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
             if (error) throw error;
