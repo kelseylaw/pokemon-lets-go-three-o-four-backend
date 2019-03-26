@@ -75,6 +75,9 @@ app.post('/gymBadges', badgeQueries.createBadge);
 app.put('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.updateBadge);
 app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 
+// ItemTypes
+app.get('/itemType', itemTypeQueries.getTypes);
+
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
 });
