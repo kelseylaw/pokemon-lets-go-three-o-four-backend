@@ -80,7 +80,7 @@ let getNextID = function(table) {
     })
 };
 
-modules.exponent = {
+module.exports = {
     getBadges,
     getBadgesFromID,
     createBadge,

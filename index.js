@@ -10,6 +10,7 @@ const mapQueries = require('./query/mapQueries')
 const itemQueries = require('./query/itemQueries');
 const npcQueries = require('./query/npcQueries');
 const speciesQueries = require('./query/speciesQueries');
+const badgeQueries = require('./query/badgeQueries');
 
 app.use(bodyParser.json())
 
@@ -60,9 +61,17 @@ app.post('/npc', npcQueries.createNPC);
 app.put('/npc/:id', npcQueries.updateNPC);
 app.delete('/npc/:id', npcQueries.deleteNPC);
 
+// species
 app.get("/species", speciesQueries.getSpecies);
 app.get("/species/search", speciesQueries.getSpeciesFoundAt);
 app.get("/species/:id", speciesQueries.getSpeciesID);
+
+// badges
+app.get('/gymBadges', badgeQueries.getBadges);
+app.get('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.getBadgesFromID);
+app.post('/gymBadges', badgeQueries.createBadge);
+app.put('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.updateBadge);
+app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
