@@ -42,8 +42,9 @@ app.get("/user/:id/movements", playerQueries.getMoveAcrossRecordsByUserID)
 app.get("/user/:id/itemUses", playerQueries.getItemUseRecordsByUserID)
 app.get("/user/:id/pokemons/:speciesid", playerQueries.getSpeciesPokemonsByUserID)
 app.get("/user/:id/speciesCount", playerQueries.getNumberSpeciesCaughtByUserID)
-app.post("/user", playerQueries.addNewUser)
+app.post("/user", playerQueries.addNewUserNewPokedex)
 app.put("/user/:id", playerQueries.editUserByID)
+app.put("/user/:id/move", playerQueries.movePlayerLocationByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)
 
 // Pokemon

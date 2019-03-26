@@ -139,7 +139,7 @@ const getNumberSpeciesCaughtByUserID = (req, res) => {
   })
 }
 
-const addNewUser = (req, res) => {
+const addNewUserNewPokedex = (req, res) => {
   const accountJSON = req.body;
   const name = accountJSON.characterName;
   const username = accountJSON.username;
@@ -154,9 +154,12 @@ const addNewUser = (req, res) => {
       if (error) throw error;
       pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
         if (error) throw error;
-        pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+        pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0')`, (error, results) => {
           if (error) throw error;
-          res.status(201).json(results.rows[0]);
+          pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+            if (error) throw error;
+            res.status(201).json(results.rows[0]);
+          })
         })
       })
     })
@@ -178,6 +181,19 @@ const editUserByID = (req, res) => {
         if (error) throw error;
         res.status(200).json(results.rows[0]);
       })
+    })
+  })
+}
+
+const movePlayerLocationByID =(req, res) => {
+  const accountJSON = req.body;
+  const id = accountJSON.id;
+  const locatedAt = accountJSON.location;
+  pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${id}`, (error, results) => {
+    if (error) throw error;
+    pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+      if (error) throw error;
+      res.status(200).json(results.rows[0]);
     })
   })
 }
@@ -219,7 +235,8 @@ module.exports = {
   getCatchesRecordsByUserID,
   getSpeciesPokemonsByUserID,
   getNumberSpeciesCaughtByUserID,
-  addNewUser,
+  addNewUserNewPokedex,
   editUserByID,
+  movePlayerLocationByID,
   deletePlayerByUserID
 }
