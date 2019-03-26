@@ -42,7 +42,6 @@ app.delete('/pokemon/:id', pokemonQueries.deletePokemon);
 app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
 
-<<<<<<< HEAD
 // Items
 app.get('/item/:id', itemQueries.getItemById);
 app.get('/item/:playableID', itemQueries.getItemsFromPlayable);
@@ -58,10 +57,7 @@ app.post('/npc', npcQueries.createNPC);
 app.put('/npc/:id', npcQueries.updateNPC);
 app.delete('/npc/:id', npcQueries.deleteNPC);
 
-
-=======
 app.get("/species", speciesQueries.getSpecies);
->>>>>>> h3p0b
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
