@@ -20,15 +20,14 @@ const findMapRegion = (req, res) => {
   pool.query(`SELECT * FROM MapRegions WHERE Name = '${mapRegionName}'`, (error, results) => {
     if (error) throw error;
     else if (results.rows.length < 1) {
-      // please check formatting of message, and change to consistent formatting if wrong
       res.status(204).json({"Error": "Map region could not be found!"});
     } else {
       var mapRegion = results.rows[0];
-      pool.query(`SELECT * FROM Building_Contained WHERE Region = '${mapRegionName}'`, (error, results) => {
+      pool.query(`SELECT * FROM Building_Contained WHERE Region = '${mapRegionName}'`, (error, newResults) => {
         if (error) throw error;
-        mapRegion.buildings = results.rows;
+        mapRegion["buildings"] = newResults.rows;
+        res.status(200).json(mapRegion);
       })
-      res.status(200).json(mapRegion);
     }
   })
 }

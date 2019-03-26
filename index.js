@@ -55,7 +55,7 @@ app.put('/item/:id', itemQueries.updateItem);
 app.delete('item/:id', itemQueries.deleteItem);
 
 // NPC
-app.get('/npc', npcQueries.getNPC());
+app.get('/npc', npcQueries.getNPC);
 app.get('/npc/:id', npcQueries.getNPCByID);
 app.get('/npc/:foundAt', npcQueries.allNPCsInRegion);
 app.post('/npc', npcQueries.createNPC);
