@@ -19,9 +19,7 @@ const getPokemonByID = (request, response) => {
   const id = parseInt(request.params.id)
 
   pool.query('SELECT * FROM pokemon WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
+    if (error) throw error;
     response.status(200).json(results.rows)
   })
 }
@@ -69,21 +67,16 @@ const deletePokemon = (request, response) => {
   const id = parseInt(request.params.id)
 
   pool.query('DELETE FROM pokemon WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
+    if (error) throw error;
     response.status(200).send(`Pokemon deleted with ID: ${id}`)
   })
 }
-
 
 let getNextID = function(table) {
   return new Promise(function(resolve, reject) {
     try {
       pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
-        if (error) {
-          reject(error);
-        }
+        if (error) reject(error);
         resolve(results.rows[0].max + 1)
       })
     } catch (error) {
