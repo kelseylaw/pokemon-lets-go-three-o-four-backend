@@ -16,9 +16,9 @@ const getBadges = (req, res) => {
 };
 
 const getBadgesFromID = (req, res) => {
-    const badgeID = parseInt(request.params.badgeID);
-    const playerID = parseInt(request.params.playerID);
-    const npcID = parseInt(request.params.npcID);
+    const badgeID = parseInt(req.params.badgeID);
+    const playerID = parseInt(req.params.playerID);
+    const npcID = parseInt(req.params.npcID);
     pool.query('SELECT * FROM GymBadges_Received WHERE badgeID = $1 AND playableID = $2 AND NonPlayableID = $3',
         [badgeID, playerID, npcID], (error, results) => {
         if (error) throw error;

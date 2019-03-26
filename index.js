@@ -12,6 +12,7 @@ const npcQueries = require('./query/npcQueries');
 const speciesQueries = require('./query/speciesQueries');
 const badgeQueries = require('./query/badgeQueries');
 const itemTypeQueries = require('./query/itemTypeQueries');
+const buildingQuereis = require('./query/buildingQueries');
 
 app.use(bodyParser.json())
 
