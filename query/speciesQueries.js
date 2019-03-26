@@ -26,7 +26,20 @@ const getSpeciesID = (req, res) => {
   })
 }
 
+const getSpeciesFoundAt = (req, res) => {
+  const loc = req.params.foundAt;
+
+  console.log(loc);
+  pool.query(`SELECT * FROM species WHERE foundat = '${loc}'`, (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
 	getSpecies,
   getSpeciesID,
+  getSpeciesFoundAt,
 }
