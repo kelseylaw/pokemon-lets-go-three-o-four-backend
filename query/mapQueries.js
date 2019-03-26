@@ -32,7 +32,30 @@ const findMapRegion = (req, res) => {
   })
 }
 
+const updateMapRegion = (request, response) => {
+  const name = request.params.name;
+  const type = request.body.type;
+  const number = parseInt(request.body.maxSpawnNumber);
+  pool.query('UPDATE MapRegions SET Type = $1, MaxSpawnNumber = $2 WHERE Name = $3', [type, number, name], (error, results) => {
+    if (error) throw error;
+    pool.query('SELECT * FROM MapRegions Where Name = $1', [name], (error, results) => {
+      if (error) throw error;
+      response.status(200).json(results.rows[0]);
+    })
+  })
+};
+
+const deleteMapRegion = (request, response) => {
+  const name = request.params.name;
+  pool.query('DELETE FROM MapRegions WHERE Name = $1', [name], (error, result) => {
+        if (error) throw error;
+        response.status(200).send(`Badge deleted with Name: ${name}`);
+  })
+};
+
 module.exports = {
   getMapRegions,
-  findMapRegion
-}
+  findMapRegion,
+  updateMapRegion,
+  deleteMapRegion
+};
