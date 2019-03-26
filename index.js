@@ -31,7 +31,9 @@ app.get('/', (request, response) => {
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/:id", playerQueries.findUserByID)
-app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID);
+app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
+app.get("/user/:id/pokedex", playerQueries.getPokedexByUserID)
+app.get("/user/:id/gymBadges", playerQueries.getBadgesByUserID)
 app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)

@@ -11,7 +11,7 @@ const pool = new Pool({
 const getMapRegions = (req, res) => {
   pool.query('SELECT * FROM MapRegions', (error, results) => {
     if (error) throw error;
-    res.status(200).json(results.rows);
+    res.status(200).json({"data": results.rows});
   })
 }
 

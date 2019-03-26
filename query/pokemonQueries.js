@@ -11,7 +11,7 @@ const pool = new Pool({
 const getPokemons = (req, res) => {
   pool.query('SELECT * FROM Pokemon', (error, results) => {
     if (error) throw error
-    res.status(200).json(results.rows)
+    res.status(200).json({"data": results.rows})
   })
 }
 
@@ -20,7 +20,7 @@ const getPokemonByID = (request, response) => {
 
   pool.query('SELECT * FROM pokemon WHERE id = $1', [id], (error, results) => {
     if (error) throw error;
-    response.status(200).json(results.rows)
+    response.status(200).json({"data": results.rows})
   })
 }
 
