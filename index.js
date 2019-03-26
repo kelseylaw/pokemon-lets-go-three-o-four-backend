@@ -32,6 +32,7 @@ app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/:id", playerQueries.findUserByID)
 app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
+app.get("/user/:id/itemCount", playerQueries.getItemCount)
 app.get("/user/:id/pokedex", playerQueries.getPokedexByUserID)
 app.get("/user/:id/gymBadges", playerQueries.getBadgesByUserID)
 app.get("/user/:id/heals", playerQueries.getHealRecordsByUserID)
@@ -64,6 +65,7 @@ app.delete('item/:id', itemQueries.deleteItem);
 
 // NPC
 app.get('/npc', npcQueries.getNPC);
+app.get("/npc/search", npcQueries.getNPCByLocatedAt);
 app.get('/npc/:id', npcQueries.getNPCByID);
 app.get('/npc/:foundAt', npcQueries.allNPCsInRegion);
 app.post('/npc', npcQueries.createNPC);
