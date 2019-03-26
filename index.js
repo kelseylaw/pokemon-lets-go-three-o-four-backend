@@ -14,6 +14,7 @@ const badgeQueries = require('./query/badgeQueries');
 const itemTypeQueries = require('./query/itemTypeQueries');
 const buildingQuereis = require('./query/buildingQueries');
 const battleQueries = require('./query/battleQueries');
+const moveAcrossQueries = require('./query/moveAcrossQueries');
 
 app.use(bodyParser.json())
 
@@ -82,7 +83,7 @@ app.get("/species", speciesQueries.getSpecies);
 app.get("/species/search", speciesQueries.getSpeciesFoundAt);
 app.get("/species/:id", speciesQueries.getSpeciesID);
 
-// badges
+// Badges
 app.get('/gymBadges', badgeQueries.getBadges);
 app.get('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.getBadgesFromID);
 app.post('/gymBadges', badgeQueries.createBadge);
@@ -93,6 +94,9 @@ app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 app.get('/itemType', itemTypeQueries.getItemTypes);
 app.put('/itemType/:type', itemTypeQueries.updateItemTypeCost);
 app.delete('/itemType/:type', itemTypeQueries.deleteItemType);
+
+// MoveAcross
+app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
