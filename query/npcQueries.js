@@ -1,4 +1,4 @@
-const Pool = require('pg').pool;
+const Pool = require('pg').Pool;
 
 const pool = new Pool({
     user: 'three',
@@ -40,14 +40,20 @@ const allNPCsInRegion = (req, res) => {
 
 const createNPC = (req, res) => {
     const id = getNextID('nonPlayable');
-    const {role, reward} = req.body;
+    const {name, mapRegion, role, reward} = req.body;
+    pool.query('INSERT INTO Characters VALUES ($1, $2, $3)',
+        [id, name, mapRegion], (error, results) => {
+            if (error) {
+                throw error;
+            }
+        });
     pool.query('INSERT INTO nonPlayable VALUES ($1, $2, $3)',
         [id, role, reward], (error, results) => {
             if (error) {
                 throw error
             }
             res.status(201).send(`NonPlayable added with ID: ${id}`)
-        })
+    })
 };
 
 const updateNPC = (request, response) => {

@@ -1,4 +1,4 @@
-const Pool = require('pg').pool;
+const Pool = require('pg').Pool;
 
 const pool = new Pool({
     user: 'three',
@@ -87,4 +87,4 @@ module.exports = {
     createItem,
     updateItem,
     deleteItem
-}
+};
