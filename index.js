@@ -61,13 +61,12 @@ app.get('/pokemon/:speciesid/population', pokemonQueries.countPokemonBySpecies)
 // MapRegion
 app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
+app.put("/mapRegion/:name", mapQueries.updateMapRegion);
+app.delete("mapRegion/:name", mapQueries.deleteMapRegion);
 
 // Items
 app.post('/item', itemQueries.createItem);
 app.put('/item', itemQueries.useItem);
-
-// ItemTypes
-app.get('/itemType', itemTypeQueries.getItemTypes);
 
 // NPC
 app.get('/npc', npcQueries.getNPC);
@@ -94,6 +93,18 @@ app.delete('/gymBadges/:badgeID/:playerID/:npcID', badgeQueries.deleteBadge);
 app.get('/itemType', itemTypeQueries.getItemTypes);
 app.put('/itemType/:type', itemTypeQueries.updateItemTypeCost);
 app.delete('/itemType/:type', itemTypeQueries.deleteItemType);
+
+// Building
+app.get('/building/:id', buildingQuereis.getBuildingFromID);
+app.post('/building', buildingQuereis.createBuilding);
+app.put('/building/:id', buildingQuereis.updateBuilding);
+app.delete('/building/:id', buildingQuereis.deleteBuilding);
+
+// Battle
+app.get('/battle', battleQueries.getBattles);
+app.get('/battle/:playerID/:npcID', battleQueries.getBattleFromID);
+app.post('/battle/:playerID/:npcID', battleQueries.addBattle);
+app.delete('/battle/:playerID/:npcID', battleQueries.deleteBattle);
 
 // MoveAcross
 app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
