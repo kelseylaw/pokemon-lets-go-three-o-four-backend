@@ -36,9 +36,9 @@ const createPokemon = (request, response) => {
       if (error) res.status(400).json({"Error": "Unable to add new pokemon to database. (Pokemon)"});
       else pool.query(`INSERT INTO OwnedBy VALUES(${id}, ${ownerId})`, (error, results) => {
         if (error) res.status(400).json({"Error": "Unable to add new pokemon to database. (OwnedBy)"});
-        else pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+          pool.query(`SELECT Pokemon.*, Species.name FROM Pokemon JOIN Species ON Pokemon.PokeDexNum = Species.ID WHERE Pokemon.ID = ${id}`, (error, results) => {
           if (error) res.status(400).json({"Error": "Unable to find new pokemon in database. (Pokemon)"});
-          else response.status(200).json(results.rows[0])
+          else response.status(200).json(results.rows[0]);
         })
       })
     })
