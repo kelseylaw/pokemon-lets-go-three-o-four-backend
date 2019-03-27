@@ -172,10 +172,17 @@ const editUserByID = (req, res) => {
   const name = accountJSON.characterName;
   const username = accountJSON.username;
   const password = accountJSON.password;
+  const haveBalance = "balance" in accountJSON;
 
   pool.query(`UPDATE Characters SET Name = '${name}' WHERE ID = ${id}`, (error, results) => {
     if (error) throw error;
-    pool.query(`UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`, (error, results) => {
+    let playableQuery = "";
+    if (haveBalance) {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}', Balance = ${accountJSON.balance} WHERE ID = ${id}`
+    } else {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`
+    }
+    pool.query(playableQuery, (error, results) => {
       if (error) throw error;
       pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
         if (error) throw error;
