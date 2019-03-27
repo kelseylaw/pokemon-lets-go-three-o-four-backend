@@ -63,9 +63,21 @@ const getBattlesByUserID = (req, res) => {
   })
 }
 
+// TODO: Remove this method when 
 const getPokedexByUserID = (req, res) => {
   const userID = req.params.id;
   pool.query(`SELECT * FROM Pokedex WHERE OwnerID = ${userID}`, (error, results) => {
+    if (error) throw error;
+    else if (results.rows.length < 1) {
+      res.status(204).json({"Error": "User could not be found!"});
+    }
+    res.status(200).json(results.rows[0]);
+  })
+}
+
+const getDistinctSpeciesCaughtByUserID = (req, res) => {
+  const userID = req.params.id;
+  pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM OwnedBy LEFT JOIN Pokemon ON OwnedBy.PokemonID = Pokemon.ID WHERE OwnedBy.OwnerID = ${userID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
     if (error) throw error;
     else if (results.rows.length < 1) {
       res.status(204).json({"Error": "User could not be found!"});
@@ -245,6 +257,7 @@ module.exports = {
   getItemCount,
   getBattlesByUserID,
   getPokedexByUserID,
+  getDistinctSpeciesCaughtByUserID,
   getBadgesByUserID,
   getHealRecordsByUserID,
   getSellsRecordsByUserID,
