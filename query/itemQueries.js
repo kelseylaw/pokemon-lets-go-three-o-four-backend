@@ -10,8 +10,8 @@ const pool = new Pool({
 
 const createItem = (request, response) => {
     const body = request.body;
-    const type = body.itemType;
-    const playableID = body.userId;
+    const type = body.type;
+    const playableID = body.playableId;
     getNextID('Items').then(function(id) {
         pool.query('INSERT INTO Items VALUES ($1, $2, $3, 0)',
             [id, type, playableID], (error, results) => {
