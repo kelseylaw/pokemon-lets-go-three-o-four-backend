@@ -15,10 +15,10 @@ const createItem = (request, response) => {
     getNextID('Items').then(function(id) {
         pool.query('INSERT INTO Items VALUES ($1, $2, $3, 0)',
             [id, type, playableID], (error, results) => {
-                if (error) throw error;
-                pool.query(`SELECT * FROM Items WHERE ID = ${id}`, (error, results) => {
-                    if (error) throw error;
-                    response.status(200).json(results.rows[0]);
+                if (error) res.status(400).json({"Error": "Unable to add new item to database. (Items)"});
+                else pool.query(`SELECT * FROM Items WHERE ID = ${id}`, (error, results) => {
+                    if (error) res.status(400).json({"Error": "Unable to find new item in database. (Items)"});
+                    else response.status(200).json(results.rows[0]);
                 });
         })
     })
@@ -30,15 +30,17 @@ const useItem = (request, response) => {
     const playableID = body.userId;
 
     pool.query(`SELECT * FROM Items WHERE PlayableID = ${playableID} AND Type = '${type}' AND Used = 0`, (error, results) => {
-        if (error) throw error;
-        var firstMatchingItemID = results.rows[0].id;
-        pool.query(`UPDATE Items SET Used = 1 WHERE ID = ${firstMatchingItemID}`, (error, results) => {
-            if (error) throw error;
-            pool.query(`SELECT * FROM Items WHERE ID = ${firstMatchingItemID}`, (error, results) => {
-                if (error) throw error;
-                response.status(200).json(results.rows[0]);
-            });
-        });
+        if (error) res.status(400).json({"Error": "Unable to find available item in database. (Items)"});
+        else { 
+            var firstMatchingItemID = results.rows[0].id;
+            pool.query(`UPDATE Items SET Used = 1 WHERE ID = ${firstMatchingItemID}`, (error, results) => {
+                if (error) res.status(400).json({"Error": "Unable to update available item in database. (Items)"});
+                else pool.query(`SELECT * FROM Items WHERE ID = ${firstMatchingItemID}`, (error, results) => {
+                    if (error) res.status(400).json({"Error": "Unable to find newly used item in database. (Items)"});
+                    else response.status(200).json(results.rows[0]);
+                });
+            })
+        };
     });
 };
 
