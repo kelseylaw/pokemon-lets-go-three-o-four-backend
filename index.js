@@ -112,6 +112,24 @@ app.delete('/battle/:playerID/:npcID', battleQueries.deleteBattle);
 
 // MoveAcross
 app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
+app.post('/moveAcross/:playableID', moveAcrossQueries.addMoveAcross);
+
+// Heals
+app.post('/heal/:pokemonID/:buildingID/:playableID', healQueries.addHealRecord);
+app.get('/heal', healQueries.getAllHealRecords);
+
+// Sells
+app.post('/sell/:itemID/:buildingID/:playableID', sellQueries.addSellRecord);
+app.get('/sell', sellQueries.allSellRecords);
+
+// Catch
+app.post('/catch/:playableID/:pokeID/:itemID', catchQueries.addCatchRecord);
+app.get('/catch', catchQueries.getAllRecords);
+
+// Uses
+app.post('/use/:playableID/:pokeID/:itemID', usesQueries.addUsesRecord);
+app.get('/use', usesQueries.getUsesRecords);
+
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
