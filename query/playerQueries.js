@@ -151,14 +151,14 @@ const addNewUserNewPokedex = (req, res) => {
 
   getNextID('Characters').then(function(id) {
     pool.query(`INSERT INTO Characters VALUES(${id}, '${name}', 'Pallet Town')`, (error, results) => {
-      if (error) throw error;
-      pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
-        if (error) throw error;
-        pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0)`, (error, results) => {
-          if (error) throw error;
-          pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
-            if (error) throw error;
-            res.status(201).json(results.rows[0]);
+      if (error) res.status(400).json({"Error": "Unable to add new user to database. (Characters)"});
+      else pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
+        if (error) res.status(400).json({"Error": "Unable to add new user to database. (Playable)"});
+        else pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0)`, (error, results) => {
+          if (error) res.status(400).json({"Error": "Unable to add new user to database. (Pokedex)"});
+          else pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+            if (error) res.status(400).json({"Error": "Unable to find new user in database. (Characters)"});
+            else res.status(201).json(results.rows[0]);
           })
         })
       })
@@ -188,9 +188,9 @@ const editUserByID = (req, res) => {
       playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`
     }
     pool.query(playableQuery, (error, results) => {
-      if (error) throw error;
+      if (error) res.status(400).json({"Error": "Unable to edit user in database. (Playable)"});
       pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
-        if (error) throw error;
+        if (error) res.status(400).json({"Error": "Unable to find edited user in database. (Characters)"});
         res.status(200).json(results.rows[0]);
       })
     })
@@ -219,8 +219,8 @@ const movePlayerLocationByID = (req, res) => {
 const deletePlayerByUserID = (req, res) => {
   const userID = req.params.id;
   pool.query(`DELETE FROM Characters WHERE ID = ${userID}`, (error, results) => {
-    if (error) throw error;
-    res.status(200).send(`Character/Playable/Account was deleted with the ID ${userID}`);
+    if (error) res.status(400).json({"Error": "Unable to delete user from database. (Characters)"});
+    else res.status(200).send(`Character/Playable/Account was deleted with the ID ${userID}`);
   })
 }
 
