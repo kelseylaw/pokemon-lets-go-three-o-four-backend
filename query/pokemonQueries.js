@@ -39,7 +39,7 @@ const createPokemon = (request, response) => {
       }
       pool.query(`INSERT INTO OwnedBy VALUES(${id}, ${ownerId})`, (error, results) => {
         if (error) throw error;
-        pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+        pool.query(`SELECT Pokemon.*, Species.name FROM Pokemon JOIN Species ON Pokemon.PokeDexNum = Species.ID WHERE Pokemon.ID = ${id}`, (error, results) => {
           if (error) throw error;
           response.status(200).json(results.rows[0])
         })
