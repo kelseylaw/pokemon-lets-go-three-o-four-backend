@@ -25,15 +25,19 @@ const getPokemonByID = (request, response) => {
 }
 
 const createPokemon = (request, response) => {
-  const {pokedexnum, nickname, ownerid} = request.body;
+  // const {pokedexnum, nickname, ownerid} = request.body;
+  const pokemonJSON = request.body;
+  const dexNum = pokemonJSON.dexNum;
+  const nickname = "nickname" in pokemonJSON ? pokemonJSON.nickname : null;
+  const ownerId = pokemonJSON.ownerId;
 
   getNextID('pokemon').then(function(id) {
-    pool.query('INSERT INTO pokemon VALUES ($1, $2, $3, \'Healthy\', 0)', [id, nickname, pokedexnum], (error, results) => {
+    pool.query('INSERT INTO pokemon VALUES ($1, $2, $3, \'Healthy\', 0)', [id, nickname, dexNum], (error, results) => {
       if (error) {
         response.json({ error: `create pokemon with id=${id} failed!` });
         throw error;
       }
-      pool.query(`INSERT INTO OwnedBy VALUES(${id}, ${ownerid})`, (error, results) => {
+      pool.query(`INSERT INTO OwnedBy VALUES(${id}, ${ownerId})`, (error, results) => {
         if (error) throw error;
         pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
           if (error) throw error;
