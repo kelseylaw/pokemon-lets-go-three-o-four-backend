@@ -41,7 +41,7 @@ const findUserByID = (req, res) => {
 
 const getPokemonsByUserID = (req, res) => {
   const ownerID = parseInt(req.params.id);
-  pool.query(`SELECT Pokemon.ID, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID =  ${ownerID}`, (error, results) => {
+  pool.query(`SELECT Pokemon.ID, Species.Name, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID JOIN Species ON Pokemon.PokeDexNum = Species.ID WHERE OwnedBy.OwnerID =  ${ownerID}`, (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
   })
@@ -172,10 +172,22 @@ const editUserByID = (req, res) => {
   const name = accountJSON.characterName;
   const username = accountJSON.username;
   const password = accountJSON.password;
+  const haveBalance = "balance" in accountJSON;
+  const haveBadgesOwned = "badgesowned" in accountJSON;
 
   pool.query(`UPDATE Characters SET Name = '${name}' WHERE ID = ${id}`, (error, results) => {
     if (error) throw error;
-    pool.query(`UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`, (error, results) => {
+    let playableQuery = "";
+    if (haveBalance && haveBadgesOwned) {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}', Balance = ${accountJSON.balance}, BadgesOwned = ${accountJSON.badgesowned} WHERE ID = ${id}`
+    } else if (haveBalance) {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}', Balance = ${accountJSON.balance} WHERE ID = ${id}`
+    } else if (haveBadgesOwned) {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}', BadgesOwned = ${accountJSON.badgesowned} WHERE ID = ${id}`
+    } else {
+      playableQuery = `UPDATE Playable SET Username = '${username}', Password = '${password}' WHERE ID = ${id}`
+    }
+    pool.query(playableQuery, (error, results) => {
       if (error) throw error;
       pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
         if (error) throw error;

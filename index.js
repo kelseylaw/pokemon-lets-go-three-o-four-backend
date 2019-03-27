@@ -15,6 +15,10 @@ const itemTypeQueries = require('./query/itemTypeQueries');
 const buildingQuereis = require('./query/buildingQueries');
 const battleQueries = require('./query/battleQueries');
 const moveAcrossQueries = require('./query/moveAcrossQueries');
+const healQueries = require('./query/healQueries');
+const sellQueries = require('./query/sellQueries');
+const catchQueries = require('./query/catchesQueries');
+const usesQueries = require('./query/usesQueries');
 
 app.use(bodyParser.json())
 
@@ -61,13 +65,12 @@ app.get('/pokemon/:speciesid/population', pokemonQueries.countPokemonBySpecies)
 // MapRegion
 app.get("/mapRegion", mapQueries.getMapRegions)
 app.get("/mapRegion/:name", mapQueries.findMapRegion)
+app.put("/mapRegion/:name", mapQueries.updateMapRegion);
+app.delete("mapRegion/:name", mapQueries.deleteMapRegion);
 
 // Items
 app.post('/item', itemQueries.createItem);
 app.put('/item', itemQueries.useItem);
-
-// ItemTypes
-app.get('/itemType', itemTypeQueries.getItemTypes);
 
 // NPC
 app.get('/npc', npcQueries.getNPC);
@@ -95,8 +98,38 @@ app.get('/itemType', itemTypeQueries.getItemTypes);
 app.put('/itemType/:type', itemTypeQueries.updateItemTypeCost);
 app.delete('/itemType/:type', itemTypeQueries.deleteItemType);
 
+// Building
+app.get('/building/:id', buildingQuereis.getBuildingFromID);
+app.post('/building', buildingQuereis.createBuilding);
+app.put('/building/:id', buildingQuereis.updateBuilding);
+app.delete('/building/:id', buildingQuereis.deleteBuilding);
+
+// Battle
+app.get('/battle', battleQueries.getBattles);
+app.get('/battle/:playerID/:npcID', battleQueries.getBattleFromID);
+app.post('/battle/:playerID/:npcID', battleQueries.addBattle);
+app.delete('/battle/:playerID/:npcID', battleQueries.deleteBattle);
+
 // MoveAcross
 app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
+app.post('/moveAcross/:playableID', moveAcrossQueries.addMoveAcross);
+
+// Heals
+app.post('/heal/:pokemonID/:buildingID/:playableID', healQueries.addHealRecord);
+app.get('/heal', healQueries.getAllHealRecords);
+
+// Sells
+app.post('/sell/:itemID/:buildingID/:playableID', sellQueries.addSellRecord);
+app.get('/sell', sellQueries.allSellRecords);
+
+// Catch
+app.post('/catch/:playableID/:pokeID/:itemID', catchQueries.addCatchRecord);
+app.get('/catch', catchQueries.getAllRecords);
+
+// Uses
+app.post('/use/:playableID/:pokeID/:itemID', usesQueries.addUsesRecord);
+app.get('/use', usesQueries.getUsesRecords);
+
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)
