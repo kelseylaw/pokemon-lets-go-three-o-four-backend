@@ -63,18 +63,6 @@ const getBattlesByUserID = (req, res) => {
   })
 }
 
-// TODO: Remove this method when 
-const getPokedexByUserID = (req, res) => {
-  const userID = req.params.id;
-  pool.query(`SELECT * FROM Pokedex WHERE OwnerID = ${userID}`, (error, results) => {
-    if (error) throw error;
-    else if (results.rows.length < 1) {
-      res.status(204).json({"Error": "User could not be found!"});
-    }
-    res.status(200).json(results.rows[0]);
-  })
-}
-
 const getDistinctSpeciesCaughtByUserID = (req, res) => {
   const userID = req.params.id;
   pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM OwnedBy LEFT JOIN Pokemon ON OwnedBy.PokemonID = Pokemon.ID WHERE OwnedBy.OwnerID = ${userID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
@@ -151,7 +139,7 @@ const getNumberSpeciesCaughtByUserID = (req, res) => {
   })
 }
 
-const addNewUserNewPokedex = (req, res) => {
+const addNewUser = (req, res) => {
   const accountJSON = req.body;
   const name = accountJSON.characterName;
   const username = accountJSON.username;
@@ -166,12 +154,9 @@ const addNewUserNewPokedex = (req, res) => {
       if (error) res.status(400).json({"Error": "Unable to add new user to database. (Characters)"});
       else pool.query(`INSERT INTO Playable VALUES(${id}, '${username}', '${password}', TO_DATE('${createdAt}', 'YYYY-MM-DD'), ${badgesOwned}, ${balance}, ${admin})`, (error, results) => {
         if (error) res.status(400).json({"Error": "Unable to add new user to database. (Playable)"});
-        else pool.query(`INSERT INTO Pokedex VALUES(${id}, 0, 0)`, (error, results) => {
-          if (error) res.status(400).json({"Error": "Unable to add new user to database. (Pokedex)"});
-          else pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
-            if (error) res.status(400).json({"Error": "Unable to find new user in database. (Characters)"});
-            else res.status(201).json(results.rows[0]);
-          })
+        else pool.query(`SELECT * FROM Characters RIGHT JOIN Playable ON Characters.ID = Playable.ID WHERE Characters.ID = ${id}`, (error, results) => {
+          if (error) res.status(400).json({"Error": "Unable to find new user in database. (Characters)"});
+          else res.status(201).json(results.rows[0]);
         })
       })
     })
@@ -256,7 +241,6 @@ module.exports = {
   getPokemonsByUserID,
   getItemCount,
   getBattlesByUserID,
-  getPokedexByUserID,
   getDistinctSpeciesCaughtByUserID,
   getBadgesByUserID,
   getHealRecordsByUserID,
@@ -266,7 +250,7 @@ module.exports = {
   getCatchesRecordsByUserID,
   getSpeciesPokemonsByUserID,
   getNumberSpeciesCaughtByUserID,
-  addNewUserNewPokedex,
+  addNewUser,
   editUserByID,
   movePlayerLocationByID,
   deletePlayerByUserID
