@@ -147,22 +147,22 @@ CREATE TABLE MoveAcross(
 
 CREATE TABLE Catches(
 	PlayableID int,
-	PokeID int,
+	PokemonID int,
 	ItemID int,
 	HappenedAt timestamp NOT NULL,
-	PRIMARY KEY (PlayableID, PokeID),
+	PRIMARY KEY (PlayableID, PokemonID),
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE,
-	FOREIGN KEY (PokeID) REFERENCES Pokemon(ID) ON DELETE CASCADE
+	FOREIGN KEY (PokemonID) REFERENCES Pokemon(ID) ON DELETE CASCADE
 );
 
 CREATE TABLE Uses(
 	PlayableID int,
-	PokeID int,
+	PokemonID int,
 	ItemID int,
 	HappenedAt timestamp NOT NULL,
-	PRIMARY KEY (PlayableID, PokeID, ItemID),
+	PRIMARY KEY (PlayableID, PokemonID, ItemID),
 	FOREIGN KEY (PlayableID) REFERENCES Playable(ID) ON DELETE CASCADE,
-	FOREIGN KEY (PokeID) REFERENCES Pokemon(ID) ON DELETE CASCADE,
+	FOREIGN KEY (PokemonID) REFERENCES Pokemon(ID) ON DELETE CASCADE,
 	FOREIGN KEY (ItemID) REFERENCES Items(ID) ON DELETE CASCADE
 );
 
