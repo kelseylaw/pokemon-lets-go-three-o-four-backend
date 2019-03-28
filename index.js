@@ -53,6 +53,7 @@ app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
 app.put("/user/:id/move", playerQueries.movePlayerLocationByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)
+app.get("/user/count", playerQueries.totalOwnedByPlayer);
 
 // Pokemon
 app.get('/pokemon', pokemonQueries.getPokemons)

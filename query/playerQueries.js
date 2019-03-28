@@ -233,6 +233,13 @@ let getNextID = function(table) {
   })
 }
 
+const totalOwnedByPlayer = (req, res) => {
+  pool.query('SELECT Playable.Username, COUNT(OwnedBy.PokemonID) AS Total FROM Playable JOIN OwnedBy ON Playable.ID=OwnedBy.OwnerID GROUP BY Playable.Username', (error, results) => {
+    if (error) throw error;
+    res.status(200).json({"data": results.rows});
+  })
+};
+
 module.exports = {
   authenticateUser,
   getUsers,
@@ -252,5 +259,6 @@ module.exports = {
   editUserByID,
   movePlayerLocationByID,
   deletePlayerByUserID,
-  getUsersWithAllItemType
-}
+  getUsersWithAllItemType,
+  totalOwnedByPlayer
+};
