@@ -12,7 +12,7 @@ const addHealRecord = (request, response) => {
     const pokeID = request.params.pokemonID;
     const buildingID = request.params.buildingID;
     const playerID = request.params.playableID;
-    const date = new Date().toISOString().substr(0,10);
+    const date = new Date().toISOString();
     pool.query('INSERT INTO Heals VALUES ($1, $2, $3, $4)', [pokeID, buildingID, playerID, date], (error, result) => {
         if (error) throw error;
         pool.query('SELECT * FROM Heals WHERE PokemonID = $1 AND BuildingID = $2 AND PlayableID = $3',

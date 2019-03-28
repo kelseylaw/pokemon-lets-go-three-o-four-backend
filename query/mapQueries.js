@@ -34,9 +34,8 @@ const findMapRegion = (req, res) => {
 
 const updateMapRegion = (request, response) => {
   const name = request.params.name;
-  const type = request.body.type;
   const number = parseInt(request.body.maxSpawnNumber);
-  pool.query('UPDATE MapRegions SET Type = $1, MaxSpawnNumber = $2 WHERE Name = $3', [type, number, name], (error, results) => {
+  pool.query('UPDATE MapRegions SET MaxSpawnNumber = $2 WHERE Name = $3', [number, name], (error, results) => {
     if (error) throw error;
     pool.query('SELECT * FROM MapRegions Where Name = $1', [name], (error, results) => {
       if (error) throw error;

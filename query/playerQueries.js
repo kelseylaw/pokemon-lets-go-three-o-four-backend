@@ -144,7 +144,7 @@ const addNewUser = (req, res) => {
   const name = accountJSON.characterName;
   const username = accountJSON.username;
   const password = accountJSON.password;
-  const createdAt = new Date().toISOString().substr(0,10);
+  const createdAt = new Date().toISOString();
   const badgesOwned = "badgesOwned" in accountJSON ? accountJSON.badgesOwned : 0;
   const balance = "balance" in accountJSON ? accountJSON.balance : 2000;
   const admin = "admin" in accountJSON ? accountJSON.admin : 0;
@@ -198,7 +198,7 @@ const movePlayerLocationByID = (req, res) => {
   const accountJSON = req.body;
   const playableID = accountJSON.id;
   const locatedAt = accountJSON.locatedat;
-  const happenedAt = new Date().toISOString().substr(0,10);
+  const happenedAt = new Date().toISOString();
   pool.query(`UPDATE Characters SET LocatedAt = '${locatedAt}' WHERE ID = ${playableID}`, (error, results) => {
     if (error) throw error;
     getNextID('MoveAcross').then(function(id) {

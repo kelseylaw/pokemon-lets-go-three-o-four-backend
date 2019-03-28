@@ -12,7 +12,7 @@ const addUsesRecord = (require, response) => {
     const playerID = require.params.playableID;
     const pokeID = require.params.pokeID;
     const itemID = require.params.itemID;
-    const date = new Date().toISOString().substr(0,10);
+    const date = new Date().toISOString();
     pool.query('INSERT INTO Uses VALUES ($1, $2, $3, $4)', [playerID, pokeID, itemID, date], (error, result) => {
         if (error) throw error;
         pool.query('SELECT * FROM Uses WHERE PlayableID = $1 AND PokeID = $2 AND ItemID = $3', [playerID, pokeID, itemID], (error, results) => {

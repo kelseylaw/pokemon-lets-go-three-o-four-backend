@@ -11,30 +11,27 @@ const pool = new Pool({
 const getMoveAcrossRecords = (request, response) => {
     pool.query('SELECT * FROM MoveAcross', (error, results) => {
         if (error) throw error;
-        response.status(200).json({"data": results.rows});
+        response.status(200).json({ "data": results.rows });
     })
 };
 
 const addMoveAcross = (request, response) => {
-    const playerID = request.params.playableID;
-    const date = new Date().toISOString().substr(0,10);
-    pool.query('SELECT LocatedAt FROM Characters WHERE ID = $1', [playerID], (error, result) => {
-        if (error) throw error;
-        const location = result.rows[0];
-        getNextID('MoveAcross').then(function(id) {
-            pool.query('INSERT INTO MoveAcross VALUES ($1, $2, $3, $4)', [id, playerID, location, date], (error, result) => {
+    const playerid = request.body.playableid;
+    const mapname = request.body.mapname;
+    const date = new Date().toISOString();
+    getNextID('MoveAcross').then(function (id) {
+        pool.query('INSERT INTO MoveAcross VALUES ($1, $2, $3, $4)', [id, playerid, mapname, date], (error, result) => {
+            if (error) throw error;
+            pool.query('SELECT * FROM MoveAcross WHERE ID = $1', [id], (error, result) => {
                 if (error) throw error;
-                pool.query('SELECT * FROM MoveAcross WHERE ID = $1', [id], (error, result) => {
-                    if (error) throw error;
-                    response.status(200).json(result.rows[0])
-                })
+                response.status(200).json(result.rows[0])
             })
         })
-    });
+    })
 };
 
-let getNextID = function(table) {
-    return new Promise(function(resolve, reject) {
+let getNextID = function (table) {
+    return new Promise(function (resolve, reject) {
         try {
             pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
                 if (error) reject(error);
@@ -46,7 +43,7 @@ let getNextID = function(table) {
     })
 };
 
-module.exports ={
+module.exports = {
     getMoveAcrossRecords,
     addMoveAcross,
 };

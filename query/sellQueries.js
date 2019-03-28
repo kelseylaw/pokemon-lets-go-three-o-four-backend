@@ -19,7 +19,7 @@ const addSellRecord = (request, response) => {
     const itemID = request.params.itemID;
     const buildingID = request.params.buildingID;
     const playerID = request.params.playableID;
-    const date = new Date().toISOString().substr(0,10);
+    const date = new Date().toISOString();
     getNextID('Sells').then(function(id) {
         pool.query('INSERT INTO Sells VALUES ($1, $2, $3, $4, $5)', [id, itemID, buildingID, playerID, date], (error, result) => {
             response.status(200).json(result.rows[0]);

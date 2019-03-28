@@ -27,7 +27,7 @@ const getBadgesFromID = (req, res) => {
 };
 
 const createBadge = (req, res) => {
-    const date = new Date().toISOString().substr(0,10);
+    const date = new Date().toISOString();
     const {name, playableID, nonPlayableID} = req.body
     getNextID('GymBadges_Received').then(function (id) {
         pool.query('INSERT INTO GymBadges_Received VALUES ($1, $2, $3, $4, $5)',[id, name, playableID, nonPlayableID, date], (error, result) => {
@@ -46,7 +46,7 @@ const updateBadge = (request, response) => {
     const badgeID = parseInt(request.params.badgeID);
     const playerID = parseInt(request.params.playerID);
     const npcID = parseInt(request.params.npcID);
-    const happenedAt = new Date().toISOString().substr(0,10);
+    const happenedAt = new Date().toISOString()
     const name = request.body;
     pool.query('UPDATE GymBadges_Received SET Name = $2, happenedAt = $5 WHERE BadgeID = $1 AND PlayableID = $3 AND NonPlayableID = $4',
         [badgeID, name, playerID, npcID, happenedAt], (error, result) => {

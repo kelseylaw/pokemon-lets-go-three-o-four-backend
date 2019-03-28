@@ -72,10 +72,10 @@ const createNPC = (req, res) => {
 
 const updateNPC = (request, response) => {
     const id = parseInt(request.params.id);
-    const {role, reward} = request.body;
+    const reward = request.body.reward;
 
     pool.query(
-        'UPDATE nonPlayable SET role = $1, reward = $2 WHERE id = $3', [role, reward, id],
+        'UPDATE nonPlayable SET reward = $2 WHERE id = $3', [reward, id],
         (error, results) => {
             if (error) {
                 throw error;

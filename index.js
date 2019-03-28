@@ -112,7 +112,7 @@ app.delete('/battle/:playerID/:npcID', battleQueries.deleteBattle);
 
 // MoveAcross
 app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
-app.post('/moveAcross/:playableID', moveAcrossQueries.addMoveAcross);
+app.post('/moveAcross', moveAcrossQueries.addMoveAcross);
 
 // Heals
 app.post('/heal/:pokemonID/:buildingID/:playableID', healQueries.addHealRecord);

@@ -25,7 +25,7 @@ const getBattleFromID = (req, res) => {
 };
 
 const addBattle = (req, res) => {
-  const date = new Date().toISOString().substr(0,10);
+  const date = new Date().toISOString();
   const playerID = req.params.playerID;
   const npcID = req.params.npcID;
   pool.query('INSERT INTO Battle VALUES ($1, $2, $3)', [playerID, npcID, date], (error, results) => {
