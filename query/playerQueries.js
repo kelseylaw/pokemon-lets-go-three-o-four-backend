@@ -214,7 +214,7 @@ const deletePlayerByUserID = (req, res) => {
 }
 
 const getUsersWithAllItemType = (req, res) => {
-  pool.query('select c.name from characters c where not exists ((select it.Type from ItemTypes it) except (select i.Type from Items i where i.PlayableID = c.id));', (error, results) => {
+  pool.query('select * from characters c where not exists ((select it.Type from ItemTypes it) except (select i.Type from Items i where i.PlayableID = c.id));', (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows})
   })
