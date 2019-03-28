@@ -234,7 +234,7 @@ let getNextID = function(table) {
 }
 
 const totalOwnedByPlayer = (req, res) => {
-  pool.query('SELECT Playable.Username, COUNT(OwnedBy.PokemonID) AS Total FROM Playable JOIN OwnedBy ON Playable.ID=OwnedBy.OwnerID GROUP BY Playable.Username HAVING COUNT(OwnedBy.PokemonID) > (SELECT AVG(COUNT(OwnedBy.PokemonID)) FROM OwnedBy JOIN Playable ON Playable.ID=OwnedBy.OwnerID GROUP BY Playable.Username) ORDER BY Total DESC;', (error, results) => {
+  pool.query('SELECT Playable.Username, COUNT(OwnedBy.PokemonID) AS Total FROM Playable JOIN OwnedBy ON Playable.ID=OwnedBy.OwnerID GROUP BY Playable.Username HAVING COUNT(OwnedBy.PokemonID) > (SELECT AVG(CaughtCount)FROM (SELECT COUNT(OwnedBy.PokemonID) as CaughtCount FROM OwnedBy JOIN Playable ON Playable.ID = OwnedBy.OwnerID GROUP BY Playable.Username) as CaughtCounts) ORDER BY Total DESC;', (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
   })
