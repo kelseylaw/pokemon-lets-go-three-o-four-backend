@@ -20,7 +20,7 @@ const addMoveAcross = (request, response) => {
     const mapname = request.body.mapname;
     const date = new Date().toISOString();
     getNextID('MoveAcross').then(function (id) {
-        pool.query('INSERT INTO MoveAcross VALUES ($1, $2, $3, $4)', [id, playerid, mapname, date], (error, result) => {
+        pool.query('INSERT INTO MoveAcross VALUES ($1, $2, $3, TO_DATE($4, \'YYYY-MM-DD\'))', [id, playerid, mapname, date], (error, result) => {
             if (error) throw error;
             pool.query('SELECT * FROM MoveAcross WHERE ID = $1', [id], (error, result) => {
                 if (error) throw error;

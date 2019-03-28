@@ -21,7 +21,7 @@ const addSellRecord = (request, response) => {
     const playerID = request.params.playableID;
     const date = new Date().toISOString();
     getNextID('Sells').then(function(id) {
-        pool.query('INSERT INTO Sells VALUES ($1, $2, $3, $4, $5)', [id, itemID, buildingID, playerID, date], (error, result) => {
+        pool.query('INSERT INTO Sells VALUES ($1, $2, $3, $4, TO_DATE($5, \'YYYY-MM-DD\'))', [id, itemID, buildingID, playerID, date], (error, result) => {
             response.status(200).json(result.rows[0]);
         })
     })

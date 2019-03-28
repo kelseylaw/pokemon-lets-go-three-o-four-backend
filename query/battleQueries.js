@@ -28,7 +28,7 @@ const addBattle = (req, res) => {
   const playerID = req.params.playerID;
   const npcID = req.params.npcID;
   getNextID('Battle').then(function (id) {
-    pool.query('INSERT INTO Battle VALUES ($1, $2, $3, $4)', [id, playerID, npcID, date], (error, results) => {
+    pool.query('INSERT INTO Battle VALUES ($1, $2, $3, TO_DATE($4, \'YYYY-MM-DD\'))', [id, playerID, npcID, date], (error, results) => {
       if (error) throw error;
       pool.query('SELECT * FROM Battle WHERE ID = $1', [id], (error, results) => {
         if (error) throw error;
