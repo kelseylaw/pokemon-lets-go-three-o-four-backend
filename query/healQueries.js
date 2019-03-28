@@ -24,7 +24,7 @@ const addHealRecord = (request, response) => {
 };
 
 const getAllHealRecords = (request, response) => {
-    pool.query('SELECT * FROM Heal', (error, result) => {
+    pool.query('SELECT * FROM Heals', (error, result) => {
         if (error) throw error;
         response.status(200).json({"data": result.rows});
     })
