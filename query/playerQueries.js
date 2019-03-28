@@ -65,7 +65,7 @@ const getBattlesByUserID = (req, res) => {
 
 const getDistinctSpeciesCaughtByUserID = (req, res) => {
   const userID = req.params.id;
-  pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM OwnedBy LEFT JOIN Pokemon ON OwnedBy.PokemonID = Pokemon.ID WHERE OwnedBy.OwnerID = ${userID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
+  pool.query(`SELECT COUNT(DISTINCT Pokemon.PokedexNum) AS SpeciesCaught FROM Pokemon RIGHT JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${userID}`, (error, results) => {
     if (error) throw error;
     else if (results.rows.length < 1) {
       res.status(204).json({"Error": "User could not be found!"});
@@ -128,14 +128,6 @@ const getSpeciesPokemonsByUserID = (req, res) => {
   pool.query(`SELECT Pokemon.ID, Pokemon.Nickname, Pokemon.PokeDexNum, Pokemon.Status, Pokemon.BattlesDone FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} AND Pokemon.PokedexNum = ${speciesID}`, (error, results) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
-  })
-}
-
-const getNumberSpeciesCaughtByUserID = (req, res) => {
-  const ownerID = req.params.id;
-  pool.query(`SELECT COUNT(*) AS SpeciesCaught FROM Pokemon JOIN OwnedBy ON Pokemon.ID = OwnedBy.PokemonID WHERE OwnedBy.OwnerID = ${ownerID} GROUP BY Pokemon.PokedexNum`, (error, results) => {
-    if (error) throw error;
-    res.status(200).json(results.rows[0]);
   })
 }
 
@@ -256,7 +248,6 @@ module.exports = {
   getItemUseRecordsByUserID,
   getCatchesRecordsByUserID,
   getSpeciesPokemonsByUserID,
-  getNumberSpeciesCaughtByUserID,
   addNewUser,
   editUserByID,
   movePlayerLocationByID,
