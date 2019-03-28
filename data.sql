@@ -107,7 +107,7 @@ CREATE TABLE GymBadges_Received(
 );
 
 CREATE TABLE Sells(
-	TransactionID int PRIMARY KEY,
+	ID int PRIMARY KEY,
 	ItemID int, 
 	BuildingID int,
 	PlayableID int,
