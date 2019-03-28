@@ -13,12 +13,11 @@ const getBattles = (req, res) => {
     if (error) throw error;
     res.status(200).json({"data": results.rows});
   })
-}
+};
 
 const getBattleFromID = (req, res) => {
-  const playerID = req.params.playerID;
-  const npcID = req.params.npcID;
-  pool.query('SELECT * FROM Battle WHERE PlayableID = $1 AND NonPlayableID = $2', [playerID, npcID], (error, results) => {
+  const id = req.params.id;
+  pool.query('SELECT * FROM Battle WHERE ID = $1', [id], (error, results) => {
     if (error) throw error;
     res.status(200).json(results.rows[0]);
   })
@@ -28,21 +27,35 @@ const addBattle = (req, res) => {
   const date = new Date().toISOString();
   const playerID = req.params.playerID;
   const npcID = req.params.npcID;
-  pool.query('INSERT INTO Battle VALUES ($1, $2, $3)', [playerID, npcID, date], (error, results) => {
-    if (error) throw error;
-    pool.query('SELECT * FROM Battle WHERE PlayableID = $1 AND NonPlayableID = $2', [playerID, npcID], (error, results) => {
+  getNextID('Battle').then(function (id) {
+    pool.query('INSERT INTO Battle VALUES ($1, $2, $3, $4)', [id, playerID, npcID, date], (error, results) => {
       if (error) throw error;
-      res.status(200).json(results.rows[0]);
+      pool.query('SELECT * FROM Battle WHERE ID = $1', [id], (error, results) => {
+        if (error) throw error;
+        res.status(200).json(results.rows[0]);
+      })
     })
   })
 };
 
 const deleteBattle = (req, res) => {
-  const playerID = parseInt(req.params.playerID);
-  const npcID = parseInt(req.params.npcID);
-  pool.query('DELETE FROM Battle WHERE PlayableID = $1 AND NonPlayableID = $2', [playerID, npcID], (error, result) => {
+  const id = parseInt(req.params.id);
+  pool.query('DELETE FROM Battle WHERE ID = $1', [id], (error, result) => {
     if (error) throw error;
-    res.status(200).send(`Battle deleted with PlayableID: ${playerID} and NonPlayableID: ${npcID}`);
+    res.status(200).send(`Battle deleted with ID: ${id}`);
+  })
+};
+
+let getNextID = function(table) {
+  return new Promise(function(resolve, reject) {
+    try {
+      pool.query(`SELECT max(id) FROM ${table}`, (error, results) => {
+        if (error) reject(error);
+        resolve(results.rows[0].max + 1)
+      })
+    } catch (error) {
+      console.error(error);
+    }
   })
 };
 
