@@ -37,6 +37,7 @@ app.get('/', (request, response) => {
 // Playable Characters
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
+app.get("/user/allItemType", playerQueries.getUsersWithAllItemType)
 app.get("/user/:id", playerQueries.findUserByID)
 app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
 app.get("/user/:id/itemCount", playerQueries.getItemCount)
