@@ -38,6 +38,7 @@ app.get('/', (request, response) => {
 app.post("/authenticate", playerQueries.authenticateUser)
 app.get("/user", playerQueries.getUsers)
 app.get("/user/allItemType", playerQueries.getUsersWithAllItemType)
+app.get("/user/count", playerQueries.totalOwnedByPlayer);
 app.get("/user/:id", playerQueries.findUserByID)
 app.get("/user/:id/pokemons", playerQueries.getPokemonsByUserID)
 app.get("/user/:id/itemCount", playerQueries.getItemCount)
@@ -53,7 +54,6 @@ app.post("/user", playerQueries.addNewUser)
 app.put("/user/:id", playerQueries.editUserByID)
 app.put("/user/:id/move", playerQueries.movePlayerLocationByID)
 app.delete("/user/:id", playerQueries.deletePlayerByUserID)
-app.get("/user/count", playerQueries.totalOwnedByPlayer);
 
 // Pokemon
 app.get('/pokemon', pokemonQueries.getPokemons)
