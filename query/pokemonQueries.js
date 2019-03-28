@@ -80,6 +80,22 @@ const countPokemonBySpecies = (req, res) => {
   })
 }
 
+const getAllUsersWith = (request, response) => {
+  const pokemon = Object.values(request.query)[0];
+
+  pool.query(
+    'UPDATE pokemon SET nickname = $1, pokedexnum = $2, status = $3, battlesdone = $4 WHERE id = $5',
+    [nickname, pokedexnum, status, battlesdone, id],
+    (error, results) => {
+      if (error) response.status(400).json({"Error": "Unable to update Pokemon in database. (Pokemon)"});
+      else pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {
+        if (error) throw error;
+        response.status(200).json(results.rows[0])
+      })
+    }
+  )
+}
+
 let getNextID = function(table) {
   return new Promise(function(resolve, reject) {
     try {
