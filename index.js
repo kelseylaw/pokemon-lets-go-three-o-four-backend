@@ -84,7 +84,8 @@ app.delete('/npc/:id', npcQueries.deleteNPC);
 
 // Species
 app.get("/species", speciesQueries.getSpecies);
-app.get("/species/search", speciesQueries.getSpeciesFoundAt);
+app.get("/species/search", speciesQueries.getSpeciesCond);
+app.get("/species/:proj/search", speciesQueries.getSpeciesProjCond);
 app.get("/species/:id", speciesQueries.getSpeciesID);
 
 // Badges

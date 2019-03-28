@@ -26,9 +26,18 @@ const getSpeciesID = (req, res) => {
   })
 }
 
-const getSpeciesFoundAt = (req, res) => {
-  condBuilder('species', req.query);
-  pool.query(condBuilder('species', req.query), (error, results) => {
+const getSpeciesCond = (req, res) => {
+  pool.query(condBuilder('species', '*', req.query), (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json({"data": results.rows})
+  })
+}
+
+const getSpeciesProjCond = (req, res) => {
+  const proj = req.params.proj
+  pool.query(condBuilder('species', proj, req.query), (error, results) => {
     if (error) {
       throw error
     }
@@ -39,12 +48,12 @@ const getSpeciesFoundAt = (req, res) => {
 // to build a sql query table is which table you are selecting form 
 // json is the req.query you got from endpoint
 // usage example see getSpeciesFoundAt
-function condBuilder(table, json) {
+function condBuilder(table, proj, json) {
   let length = parseInt(Object.keys(json).length);
   const keys =  Object.keys(json);
   const values = Object.values(json);
   let counter = 0;
-  let query = `SELECT * from ${table} WHERE ${keys[counter]} = '${values[counter]}'`;
+  let query = `SELECT ${proj} from ${table} WHERE ${keys[counter]} = '${values[counter]}'`;
   counter++;
   length--;
   while (length !== 0) {
@@ -58,5 +67,6 @@ function condBuilder(table, json) {
 module.exports = {
 	getSpecies,
   getSpeciesID,
-  getSpeciesFoundAt,
+  getSpeciesCond,
+  getSpeciesProjCond,
 }
