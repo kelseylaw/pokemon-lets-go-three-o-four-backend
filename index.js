@@ -109,7 +109,7 @@ app.delete('/building/:id', buildingQuereis.deleteBuilding);
 // Battle
 app.get('/battle', battleQueries.getBattles);
 app.get('/battle/:id', battleQueries.getBattleFromID);
-app.post('/battle/:playerID/:npcID', battleQueries.addBattle);
+app.post('/battle', battleQueries.addBattle);
 app.delete('/battle/:id', battleQueries.deleteBattle);
 
 // MoveAcross
