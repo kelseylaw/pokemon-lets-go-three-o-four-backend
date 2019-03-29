@@ -9,13 +9,13 @@ const pool = new Pool({
 });
 
 const addCatchRecord = (require, response) => {
-    const playerID = require.params.playableID;
-    const pokeID = require.params.pokeID;
-    const itemID = require.params.itemID;
+    const playableId = require.body.playableid;
+    const pokemonId = require.body.pokemonid;
+    const itemId = require.body.itemid;
     const date = new Date().toISOString();
-    pool.query('INSERT INTO Catches VALUES ($1, $2, $3, TO_DATE($4, \'YYYY-MM-DD\'))', [playerID, pokeID, itemID, date], (error, result) => {
+    pool.query('INSERT INTO Catches VALUES ($1, $2, $3, TO_DATE($4, \'YYYY-MM-DD\'))', [playableId, pokemonId, itemId, date], (error, result) => {
         if (error) throw error;
-        pool.query('SELECT * FROM Catches WHERE PlayableID = $1 AND PokeID = $2', [playerID, pokeID], (error, results) => {
+        pool.query('SELECT * FROM Catches WHERE PlayableID = $1 AND PokemonID = $2', [playableId, pokemonId], (error, results) => {
             if (error) throw error;
             response.status(200).json(results.rows[0]);
         })

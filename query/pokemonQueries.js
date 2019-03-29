@@ -47,11 +47,11 @@ const createPokemon = (request, response) => {
 
 const updatePokemon = (request, response) => {
   const id = parseInt(request.params.id)
-  const {nickname, pokedexnum, status, battlesdone} = request.body
+  const status = request.body.status;
 
   pool.query(
-    'UPDATE pokemon SET nickname = $1, pokedexnum = $2, status = $3, battlesdone = $4 WHERE id = $5',
-    [nickname, pokedexnum, status, battlesdone, id],
+    'UPDATE pokemon SET status = $1 WHERE id = $2',
+    [status, id],
     (error, results) => {
       if (error) response.status(400).json({"Error": "Unable to update Pokemon in database. (Pokemon)"});
       else pool.query(`SELECT * FROM pokemon WHERE ID = ${id}`, (error, results) => {

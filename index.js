@@ -117,19 +117,19 @@ app.get('/moveAcross', moveAcrossQueries.getMoveAcrossRecords);
 app.post('/moveAcross', moveAcrossQueries.addMoveAcross);
 
 // Heals
-app.post('/heal/:pokemonID/:buildingID/:playableID', healQueries.addHealRecord);
+app.post('/heal', healQueries.addHealRecord);
 app.get('/heal', healQueries.getAllHealRecords);
 
 // Sells
-app.post('/sell/:itemID/:buildingID/:playableID', sellQueries.addSellRecord);
+app.post('/sell', sellQueries.addSellRecord);
 app.get('/sell', sellQueries.allSellRecords);
 
 // Catch
-app.post('/catch/:playableID/:pokeID/:itemID', catchQueries.addCatchRecord);
+app.post('/catch', catchQueries.addCatchRecord);
 app.get('/catch', catchQueries.getAllRecords);
 
 // Uses
-app.post('/use/:playableID/:pokeID/:itemID', usesQueries.addUsesRecord);
+app.post('/use', usesQueries.addUsesRecord);
 app.get('/use', usesQueries.getUsesRecords);
 
 
