@@ -133,7 +133,7 @@ const getSpeciesPokemonsByUserID = (req, res) => {
 
 const addNewUser = (req, res) => {
   const accountJSON = req.body;
-  const name = accountJSON.characterName;
+  const name = accountJSON.name;
   const username = accountJSON.username;
   const password = accountJSON.password;
   const createdAt = new Date().toISOString();
@@ -158,7 +158,7 @@ const addNewUser = (req, res) => {
 const editUserByID = (req, res) => {
   const accountJSON = req.body;
   const id = accountJSON.id;
-  const name = accountJSON.characterName;
+  const name = accountJSON.name;
   const username = accountJSON.username;
   const password = accountJSON.password;
   const haveBalance = "balance" in accountJSON;
