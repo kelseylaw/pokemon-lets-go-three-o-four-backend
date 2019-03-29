@@ -16,9 +16,9 @@ const addUsesRecord = (require, response) => {
     getNextID('Uses').then(function (id) {
         pool.query(`INSERT INTO Uses VALUES (${id}, $1, $2, $3, TO_DATE($4, \'YYYY-MM-DD\'))`, [playableId, pokemonId, itemId, date], (error, result) => {
             if (error) throw error;
-            pool.query('SELECT * FROM Uses WHERE PlayableID = $1 AND PokemonID = $2 AND ItemID = $3', [playableId, pokemonId, itemId], (error, results) => {
+            pool.query(`SELECT * FROM Uses WHERE id = ${id}`, (error, result) => {
                 if (error) throw error;
-                response.status(200).json(results.rows[0]);
+                response.status(200).json(result.rows[0])
             })
         })
     })
