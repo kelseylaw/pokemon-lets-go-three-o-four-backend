@@ -75,7 +75,7 @@ const updateNPC = (request, response) => {
     const reward = request.body.reward;
 
     pool.query(
-        'UPDATE nonPlayable SET reward = $2 WHERE id = $3', [reward, id],
+        'UPDATE nonPlayable SET reward = $1 WHERE id = $2', [reward, id],
         (error, results) => {
             if (error) {
                 throw error;
